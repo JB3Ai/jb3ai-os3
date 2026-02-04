@@ -1,0 +1,8 @@
+{
+  "name": "JB³Ai OS³",
+  "description": "The central operating system for work and business. Integrates intelligence, security, and support.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

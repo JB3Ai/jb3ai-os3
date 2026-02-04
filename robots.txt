@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+
+Disallow: /demo
+
+Sitemap: https://jb3ai.com/sitemap.xml

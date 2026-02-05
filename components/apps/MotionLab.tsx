@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { generateVideo, waitForVideoOperation, checkApiKeySelection, openApiKeySelection } from '../../services/gemini';
 import { Button } from '../ui/Button';
-import { Box, Play, Download, Lock, RefreshCw, Zap, ShieldCheck, Cpu } from 'lucide-react';
+import { Box, Play, Download, Lock, RefreshCw, Zap, ShieldCheck, Cpu, Terminal, Activity, Sliders } from 'lucide-react';
 import { VideoGenerationConfig } from '../../types';
+
+type Preset = 'Standard Monolith' | 'Data Flux' | 'Neural Pulse' | 'Forensic Void';
 
 export const MotionLab: React.FC = () => {
   const [isGenerating, setIsGenerating] = useState(false);
@@ -10,17 +12,36 @@ export const MotionLab: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState('');
   const [hasAccess, setHasAccess] = useState<boolean | null>(null);
+  const [logs, setLogs] = useState<string[]>([]);
+  
+  // v2.0 Parameters
+  const [preset, setPreset] = useState<Preset>('Standard Monolith');
+  const [speed, setSpeed] = useState<'Steady' | 'Rapid'>('Steady');
+  const [resolution, setResolution] = useState<'720p' | '1080p'>('1080p');
+
+  const logEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     checkApiKeySelection().then(setHasAccess);
   }, []);
 
+  useEffect(() => {
+    logEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [logs]);
+
+  const addLog = (msg: string) => {
+    setLogs(prev => [...prev.slice(-10), `[${new Date().toLocaleTimeString()}] ${msg}`]);
+  };
+
   const handleUnlock = async () => {
     try {
+      addLog("Initializing secure handshake...");
       await openApiKeySelection();
       setHasAccess(true);
+      addLog("Handshake verified. Access granted.");
     } catch (e) {
       setError("Authorization failed.");
+      addLog("Error: Security clearance denied.");
     }
   };
 
@@ -28,43 +49,44 @@ export const MotionLab: React.FC = () => {
     setIsGenerating(true);
     setError(null);
     setVideoUrl(null);
-    setStatusMessage('Synchronizing with Veo quantum clusters...');
+    setStatusMessage('Syncing quantum clusters...');
+    addLog(`Initiating v2.0 Synthesis: ${preset} @ ${resolution}`);
 
-    // Prompt refined to match the monolithic cube with emerald green panels
-    const prompt = `
-      A heavy, monolithic black industrial cube representing the OS³ Dash core.
-      The lateral faces feature inset glowing emerald green panels that emit a steady, high-fidelity light.
-      The top face is a matte dark plate with micro-etched technical circuitry patterns.
-      No logos, no text, no symbols. 
-      The cube hovers in a vast, dark, infinite tech space.
-      The background has muted AI-purple and deep indigo atmospheric depth lighting.
-      Subtle atmospheric tech-haze and very thin, faint cyan data lines occasionally trace through the depth.
-      Motion: The cube rotates extremely slowly and steadily on its vertical axis.
-      The lighting is cinematic and high-contrast, emphasizing the green glow on the surrounding dark surfaces.
-      A steady, slow camera push-in towards the monolith.
-      Style: Minimalist, industrial, high-end institutional asset.
-      Ending: Perfectly centered and stable for a seamless background loop.
-    `.trim();
+    const basePrompt = preset === 'Standard Monolith' 
+      ? "A heavy, monolithic black industrial cube. Inset glowing emerald green panels. Dark tech background."
+      : preset === 'Data Flux'
+      ? "An OS3 core monolith dissolving into vertical emerald data streams. Deep space tech environment."
+      : preset === 'Neural Pulse'
+      ? "The OS3 monolith core pulsing with emerald energy waves. High contrast cinematic lighting."
+      : "A minimalist black cube in a forensic white void. Faint emerald technical lines tracing the edges.";
+
+    const motionPrompt = speed === 'Steady' 
+      ? "Extremely slow and steady rotation. Smooth camera push-in."
+      : "Rapid geometric rotation with dynamic lighting shifts. High energy motion.";
+
+    const fullPrompt = `${basePrompt} ${motionPrompt} Minimalist, industrial, high-end institutional asset. Seamless background loop. No text, no symbols.`.trim();
 
     try {
       const config: VideoGenerationConfig = { 
-        prompt, 
+        prompt: fullPrompt, 
         aspectRatio: '16:9', 
-        resolution: '1080p' 
+        resolution: resolution 
       };
 
-      setStatusMessage('Initializing render sequence...');
+      addLog("Transmitting synthesis parameters...");
       const operation = await generateVideo(config);
       
       if (!operation) throw new Error("Operation initialization failed.");
 
-      setStatusMessage('Rendering high-fidelity loop... (8-12s)');
+      addLog("Render sequence active. Allocating GPU clusters...");
+      setStatusMessage('Rendering high-fidelity loop...');
       const completedOp = await waitForVideoOperation(operation);
       
       const uri = completedOp.response?.generatedVideos?.[0]?.video?.uri;
       if (uri) {
         setVideoUrl(`${uri}&key=${process.env.API_KEY}`);
-        setStatusMessage('Render successful. Asset ready for deployment.');
+        setStatusMessage('Render successful.');
+        addLog("Asset synthesis complete. Integrity validated.");
       } else {
         throw new Error("Render completed but no payload detected.");
       }
@@ -72,8 +94,10 @@ export const MotionLab: React.FC = () => {
       if (err.message && err.message.includes("Requested entity was not found")) {
           setHasAccess(false);
           setError("Billing authentication required.");
+          addLog("Fatal: Billing project session expired.");
       } else {
           setError("Render failed. System cluster busy.");
+          addLog("Error: Synthesis interrupted by cluster timeout.");
       }
     } finally {
       setIsGenerating(false);
@@ -102,37 +126,63 @@ export const MotionLab: React.FC = () => {
   return (
     <div className="h-full grid grid-cols-1 lg:grid-cols-12 gap-1 px-1 bg-gray-900/20">
       {/* Control Surface */}
-      <div className="lg:col-span-4 bg-[#0a0a0a] border-r border-gray-900 p-10 flex flex-col justify-between">
-        <div className="space-y-12">
+      <div className="lg:col-span-4 bg-[#0a0a0a] border-r border-gray-900 flex flex-col h-full overflow-hidden">
+        <div className="flex-1 overflow-y-auto p-8 space-y-12">
           <div className="space-y-4">
             <h2 className="text-xl font-bold text-white uppercase tracking-tighter flex items-center gap-3">
               <Box className="w-5 h-5 text-emerald-500" /> Motion Lab v2.0
             </h2>
-            <p className="text-[10px] text-gray-600 uppercase tracking-[0.3em] font-mono">Managed Asset Synthesis</p>
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span className="text-[9px] text-gray-600 uppercase tracking-[0.3em] font-mono">System Integrity Valid</span>
+            </div>
           </div>
 
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Active Brief: OS³ Monolith</h3>
-              <p className="text-xs text-gray-600 leading-relaxed uppercase tracking-wider">
-                Seamless 1080p rendering of the OS³ Dash monolithic core. Optimized for high-contrast professional environments.
-              </p>
+          {/* Presets */}
+          <div className="space-y-6">
+            <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+              <Terminal className="w-3 h-3" /> Synthesis Presets
+            </h3>
+            <div className="grid grid-cols-1 gap-2">
+              {(['Standard Monolith', 'Data Flux', 'Neural Pulse', 'Forensic Void'] as Preset[]).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPreset(p)}
+                  className={`p-4 text-left border transition-all text-[10px] font-bold uppercase tracking-widest ${preset === p ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400' : 'bg-black/40 border-gray-800 text-gray-600 hover:border-gray-500'}`}
+                >
+                  {p}
+                </button>
+              ))}
             </div>
+          </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <div className="p-4 bg-black/40 border border-gray-900 space-y-2">
-                <span className="text-[9px] text-gray-700 uppercase font-mono">Precision</span>
-                <p className="text-[10px] text-white font-bold uppercase">1080p Ultra</p>
-              </div>
-              <div className="p-4 bg-black/40 border border-gray-900 space-y-2">
-                <span className="text-[9px] text-gray-700 uppercase font-mono">Output</span>
-                <p className="text-[10px] text-emerald-500 font-bold uppercase">Ready</p>
-              </div>
+          {/* Parameters */}
+          <div className="space-y-6">
+            <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+              <Sliders className="w-3 h-3" /> Parameters
+            </h3>
+            <div className="space-y-4">
+               <div className="space-y-2">
+                  <label className="text-[9px] text-gray-600 uppercase font-mono">Motion Cadence</label>
+                  <div className="flex bg-black border border-gray-800 p-1">
+                    {(['Steady', 'Rapid'] as const).map(s => (
+                      <button key={s} onClick={() => setSpeed(s)} className={`flex-1 py-2 text-[9px] font-bold uppercase ${speed === s ? 'bg-white text-black' : 'text-gray-500'}`}>{s}</button>
+                    ))}
+                  </div>
+               </div>
+               <div className="space-y-2">
+                  <label className="text-[9px] text-gray-600 uppercase font-mono">Precision Layer</label>
+                  <div className="flex bg-black border border-gray-800 p-1">
+                    {(['720p', '1080p'] as const).map(r => (
+                      <button key={r} onClick={() => setResolution(r)} className={`flex-1 py-2 text-[9px] font-bold uppercase ${resolution === r ? 'bg-white text-black' : 'text-gray-500'}`}>{r}</button>
+                    ))}
+                  </div>
+               </div>
             </div>
           </div>
         </div>
 
-        <div className="space-y-6 pt-12 border-t border-gray-900">
+        <div className="p-8 space-y-6 border-t border-gray-900 bg-black/40">
           {error && <div className="text-[10px] text-red-500 font-mono uppercase bg-red-500/5 p-4 border border-red-500/20">{error}</div>}
           
           <Button 
@@ -140,15 +190,16 @@ export const MotionLab: React.FC = () => {
             isLoading={isGenerating}
             className="w-full bg-white text-black h-16 text-[10px] font-bold tracking-[0.3em] hover:bg-gray-200"
           >
-            {isGenerating ? 'PROCESSING RENDERS' : 'INITIALIZE SYNTHESIS'}
+            {isGenerating ? 'PROCESSING...' : 'INITIALIZE SYNTHESIS'}
           </Button>
 
-          {statusMessage && (
-            <div className="flex items-center justify-center gap-3 animate-pulse">
-              <RefreshCw className="w-3 h-3 text-emerald-500 animate-spin" />
-              <span className="text-[9px] text-gray-500 font-mono uppercase tracking-widest">{statusMessage}</span>
-            </div>
-          )}
+          {/* Diagnostics Console */}
+          <div className="h-24 bg-black border border-gray-800 rounded p-3 font-mono text-[9px] text-emerald-500/70 overflow-y-auto overflow-x-hidden scrollbar-hide">
+            {logs.map((log, i) => (
+              <div key={i} className="mb-1">{log}</div>
+            ))}
+            <div ref={logEndRef} />
+          </div>
         </div>
       </div>
 
@@ -166,14 +217,16 @@ export const MotionLab: React.FC = () => {
               </div>
             </div>
             <div className="space-y-4 text-center">
-               <h4 className="text-white text-xs font-bold uppercase tracking-[0.4em]">Rendering Monolith Data</h4>
-               <p className="text-[10px] text-gray-500 uppercase tracking-widest font-mono">PHASE: EMERALD_LUMINESCENCE</p>
+               <h4 className="text-white text-xs font-bold uppercase tracking-[0.4em]">Rendering Asset Data</h4>
+               <p className="text-[10px] text-gray-500 uppercase tracking-widest font-mono flex items-center justify-center gap-2">
+                 <Activity className="w-3 h-3 animate-bounce" /> Status: {statusMessage}
+               </p>
             </div>
           </div>
         )}
         
         {videoUrl ? (
-          <div className="w-full h-full flex flex-col items-center justify-center p-20 animate-fade-in relative z-10">
+          <div className="w-full h-full flex flex-col items-center justify-center p-12 md:p-20 animate-fade-in relative z-10">
             <div className="w-full aspect-video shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-gray-900 bg-black overflow-hidden relative group">
                <video src={videoUrl} controls autoPlay loop className="w-full h-full object-cover" />
                <div className="absolute top-4 right-4 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">

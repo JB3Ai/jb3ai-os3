@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, X } from 'lucide-react';
-import { AppModule } from '../types';
+import { AppModule } from '../../types';
 
 interface MarketingLayoutProps {
   children: React.ReactNode;
@@ -12,8 +12,8 @@ interface MarketingLayoutProps {
   setFontSize: (f: 's' | 'l') => void;
 }
 
-export const MarketingLayout: React.FC<MarketingLayoutProps> = ({ 
-  children, activeModule, navigate, isMenuOpen, setIsMenuOpen, fontSize, setFontSize 
+export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
+  children, activeModule, navigate, isMenuOpen, setIsMenuOpen, fontSize, setFontSize
 }) => {
   return (
     <div className="w-full min-h-screen bg-[#050505] text-gray-300 flex flex-col font-sans selection:bg-white selection:text-black">
@@ -29,11 +29,11 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <button onClick={() => navigate(AppModule.APPS_LIST)} className={`hover:text-white transition-colors ${activeModule === AppModule.APPS_LIST ? 'text-white' : ''}`}>Apps</button>
           </nav>
         </div>
-        
+
         <div className="flex items-center gap-12">
           <div className="flex items-center gap-4 border border-gray-800 rounded p-1 bg-black/50">
             {(['s', 'l'] as const).map(f => (
-              <button 
+              <button
                 key={f}
                 onClick={() => setFontSize(f)}
                 className={`px-4 py-1 text-xs font-bold uppercase transition-all ${fontSize === f ? 'bg-white text-black' : 'text-gray-600 hover:text-white'}`}
@@ -81,14 +81,14 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <p className="text-xs text-gray-600 max-w-sm leading-relaxed uppercase tracking-wider">The central operating layer for professional business intelligence and asset management.</p>
           </div>
           <div className="flex gap-24">
-             <div className="space-y-6">
-               <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Platform</h6>
-               <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
-                 <button onClick={() => navigate(AppModule.OS3_INFO)} className="hover:text-white transition-colors text-left">OS³ Dash</button>
-                 <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left">Demo</button>
-                 <button onClick={() => navigate(AppModule.CONTACT)} className="hover:text-white transition-colors text-left">Contact</button>
-               </div>
-             </div>
+            <div className="space-y-6">
+              <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Platform</h6>
+              <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
+                <button onClick={() => navigate(AppModule.OS3_INFO)} className="hover:text-white transition-colors text-left">OS³ Dash</button>
+                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left">Demo</button>
+                <button onClick={() => navigate(AppModule.CONTACT)} className="hover:text-white transition-colors text-left">Contact</button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="max-w-6xl mx-auto pt-32 flex justify-between items-center text-xs text-gray-700 font-mono uppercase tracking-[0.2em]">

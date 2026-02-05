@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, X, Github } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { AppModule } from '../types';
 
 interface MarketingLayoutProps {
@@ -12,10 +12,10 @@ interface MarketingLayoutProps {
   setFontSize: (f: 's' | 'l') => void;
 }
 
-export const MarketingLayout: React.FC<MarketingLayoutProps> = ({ 
-  children, activeModule, navigate, isMenuOpen, setIsMenuOpen, fontSize, setFontSize 
+export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
+  children, activeModule, navigate, isMenuOpen, setIsMenuOpen, fontSize, setFontSize
 }) => {
-  const GITHUB_URL = "https://github.com/JB3Ai/jb3ai-os3";
+
 
   return (
     <div className="w-full min-h-screen bg-[#050505] text-gray-300 flex flex-col font-sans selection:bg-white selection:text-black">
@@ -32,11 +32,11 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <button onClick={() => navigate(AppModule.SERVICES_HUB)} className={`hover:text-white transition-colors ${activeModule === AppModule.SERVICES_HUB ? 'text-white' : ''}`}>Services</button>
           </nav>
         </div>
-        
+
         <div className="flex items-center gap-12">
           <div className="flex items-center gap-4 border border-gray-800 rounded p-1 bg-black/50">
             {(['s', 'l'] as const).map(f => (
-              <button 
+              <button
                 key={f}
                 onClick={() => setFontSize(f)}
                 className={`px-4 py-1 text-xs font-bold uppercase transition-all ${fontSize === f ? 'bg-white text-black' : 'text-gray-600 hover:text-white'}`}
@@ -46,15 +46,7 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             ))}
           </div>
           <div className="hidden sm:flex items-center gap-8">
-            <a 
-              href={GITHUB_URL}
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="p-2 text-gray-500 hover:text-white transition-colors"
-              title="GitHub Repository"
-            >
-              <Github className="w-5 h-5" />
-            </a>
+
             <button onClick={() => navigate(AppModule.CONTACT)} className={`text-xs font-bold uppercase tracking-widest hover:text-white transition-colors ${activeModule === AppModule.CONTACT ? 'text-white' : 'text-gray-500'}`}>
               Contact
             </button>
@@ -80,9 +72,7 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
           ].map(m => (
             <button key={m.id} onClick={() => navigate(m.id)} className="text-xl font-bold text-white text-left uppercase tracking-widest">{m.label}</button>
           ))}
-          <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="text-xl font-bold text-gray-500 uppercase tracking-widest flex items-center gap-4">
-            <Github className="w-6 h-6" /> GitHub
-          </a>
+
         </div>
       )}
 
@@ -97,24 +87,22 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <p className="text-xs text-gray-600 max-w-sm leading-relaxed uppercase tracking-wider">The central operating layer for professional business intelligence and asset management.</p>
           </div>
           <div className="flex gap-24">
-             <div className="space-y-6">
-               <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Platform</h6>
-               <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
-                 <button onClick={() => navigate(AppModule.OS3_INFO)} className="hover:text-white transition-colors text-left">OS³ Dash</button>
-                 <button onClick={() => navigate(AppModule.APPS_LIST)} className="hover:text-white transition-colors text-left">Apps</button>
-                 <button onClick={() => navigate(AppModule.SERVICES_HUB)} className="hover:text-white transition-colors text-left">Services</button>
-                 <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left">Demo</button>
-               </div>
-             </div>
-             <div className="space-y-6">
-               <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Resources</h6>
-               <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
-                 <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
-                   <Github className="w-3 h-3" /> GitHub Repo
-                 </a>
-                 <button onClick={() => navigate(AppModule.CONTACT)} className="hover:text-white transition-colors text-left">Advisory Portal</button>
-               </div>
-             </div>
+            <div className="space-y-6">
+              <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Platform</h6>
+              <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
+                <button onClick={() => navigate(AppModule.OS3_INFO)} className="hover:text-white transition-colors text-left">OS³ Dash</button>
+                <button onClick={() => navigate(AppModule.APPS_LIST)} className="hover:text-white transition-colors text-left">Apps</button>
+                <button onClick={() => navigate(AppModule.SERVICES_HUB)} className="hover:text-white transition-colors text-left">Services</button>
+                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left">Demo</button>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Resources</h6>
+              <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
+
+                <button onClick={() => navigate(AppModule.CONTACT)} className="hover:text-white transition-colors text-left">Advisory Portal</button>
+              </div>
+            </div>
           </div>
         </div>
         <div className="max-w-6xl mx-auto pt-32 flex justify-between items-center text-xs text-gray-700 font-mono uppercase tracking-[0.2em]">

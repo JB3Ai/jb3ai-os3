@@ -15,16 +15,49 @@ interface MarketingLayoutProps {
 export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
   children, activeModule, navigate, isMenuOpen, setIsMenuOpen, fontSize, setFontSize
 }) => {
+  const [showVideo, setShowVideo] = React.useState(true);
+  const [isMobile, setIsMobile] = React.useState(false);
 
+  React.useEffect(() => {
+    // Only render video if user has NOT requested reduced motion
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
+
+    setIsMobile(isMobileDevice);
+
+    if (prefersReducedMotion) {
+      setShowVideo(false);
+    }
+  }, []);
 
   return (
     <div className="w-full min-h-screen bg-[#050505] text-gray-300 flex flex-col font-sans selection:bg-white selection:text-black">
       <div className="fixed inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] pointer-events-none -z-10" />
 
+      {/* Subtle background video loop */}
+      {showVideo && (
+        <>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            className={`fixed inset-0 w-full h-full object-cover pointer-events-none -z-20 ${isMobile ? 'opacity-10' : 'opacity-20'}`}
+          >
+            <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
+            <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
+          </video>
+          {/* Soft vignette overlay for text readability */}
+          <div className="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(5,5,5,0.4)_50%,_rgba(5,5,5,0.8)_100%)]" />
+        </>
+      )}
+
       <header className="fixed top-0 left-0 right-0 h-24 border-b border-gray-900 bg-[#0a0a0a]/90 backdrop-blur-md flex items-center justify-between px-10 z-50">
         <div className="flex items-center gap-16">
-          <h1 onClick={() => navigate(AppModule.HOME)} className="text-xs font-bold tracking-[0.3em] text-white flex items-center gap-4 cursor-pointer group uppercase">
-            <div className="w-3 h-3 bg-white transition-all group-hover:shadow-[0_0_10px_white]" /> JB³Ai
+          <h1 onClick={() => navigate(AppModule.HOME)} className="flex items-center gap-3 cursor-pointer group">
+            <img src="/media/ui/jb3ai-mark.svg" alt="JB³Ai" className="h-[18px] w-auto transition-all group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
+            <span className="text-xs font-bold tracking-[0.3em] text-white/60 group-hover:text-white uppercase transition-colors">JB³Ai</span>
           </h1>
           <nav className="hidden lg:flex items-center gap-12 text-xs font-bold uppercase tracking-widest text-gray-500">
             <button onClick={() => navigate(AppModule.OS3_INFO)} className={`hover:text-white transition-colors ${activeModule === AppModule.OS3_INFO ? 'text-white' : ''}`}>OS³ Dash</button>
@@ -83,7 +116,10 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
       <footer className="border-t border-gray-900 bg-black py-32 px-10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
           <div className="space-y-6">
-            <h5 className="text-white text-xs font-bold tracking-[0.3em] uppercase">JB³Ai Corp</h5>
+            <div className="flex items-center gap-3">
+              <img src="/media/ui/jb3ai-mark.svg" alt="JB³Ai" className="h-[18px] w-auto" />
+              <h5 className="text-white text-xs font-bold tracking-[0.3em] uppercase">JB³Ai Corp</h5>
+            </div>
             <p className="text-xs text-gray-600 max-w-sm leading-relaxed uppercase tracking-wider">The central operating layer for professional business intelligence and asset management.</p>
           </div>
           <div className="flex gap-24">

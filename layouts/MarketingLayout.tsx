@@ -15,8 +15,18 @@ interface MarketingLayoutProps {
 export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
   children, activeModule, navigate, isMenuOpen, setIsMenuOpen, fontSize, setFontSize
 }) => {
-  const [showVideo, setShowVideo] = React.useState(true);
+  const [shouldAnimate, setShouldAnimate] = React.useState(true);
   const [isMobile, setIsMobile] = React.useState(false);
+
+  const videoRef = React.useRef<HTMLVideoElement>(null);
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(err => {
+        console.error("Autoplay failed:", err);
+      });
+    }
+  }, []);
 
   React.useEffect(() => {
     // Only render video if user has NOT requested reduced motion
@@ -24,34 +34,29 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
     const isMobileDevice = window.matchMedia('(max-width: 768px)').matches;
 
     setIsMobile(isMobileDevice);
-
-    if (prefersReducedMotion) {
-      setShowVideo(false);
-    }
+    setShouldAnimate(!prefersReducedMotion);
   }, []);
 
   return (
-    <div className="w-full min-h-screen bg-[#050505] text-gray-300 flex flex-col font-sans selection:bg-white selection:text-black">
-      <div className="fixed inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] pointer-events-none -z-10" />
+    <div className="w-full min-h-screen text-gray-300 flex flex-col font-sans selection:bg-white selection:text-black relative">
+      {/* Background Stack */}
+      <div className="fixed inset-0 bg-[#050505] pointer-events-none -z-30" />
 
-      {/* Subtle background video loop */}
-      {showVideo && (
-        <>
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            className={`fixed inset-0 w-full h-full object-cover pointer-events-none -z-20 ${isMobile ? 'opacity-10' : 'opacity-20'}`}
-          >
-            <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
-            <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
-          </video>
-          {/* Soft vignette overlay for text readability */}
-          <div className="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(ellipse_at_center,_transparent_0%,_rgba(5,5,5,0.4)_50%,_rgba(5,5,5,0.8)_100%)]" />
-        </>
-      )}
+      <video
+        ref={videoRef}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="fixed inset-0 w-full h-full object-cover pointer-events-none -z-20"
+        style={{ opacity: 0.3 }}
+      >
+        <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
+        <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
+      </video>
+
+      <div className="fixed inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] pointer-events-none -z-10" />
 
       <header className="fixed top-0 left-0 right-0 h-24 border-b border-gray-900 bg-[#0a0a0a]/90 backdrop-blur-md flex items-center justify-between px-10 z-50">
         <div className="flex items-center gap-16">
@@ -59,10 +64,11 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <img src="/media/ui/jb3ai-mark.svg" alt="JB³Ai" className="h-[18px] w-auto transition-all group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" />
             <span className="text-xs font-bold tracking-[0.3em] text-white/60 group-hover:text-white uppercase transition-colors">JB³Ai</span>
           </h1>
-          <nav className="hidden lg:flex items-center gap-12 text-xs font-bold uppercase tracking-widest text-gray-500">
+          <nav className="hidden lg:flex items-center gap-12 text-[10px] font-bold uppercase tracking-[0.2em] text-gray-500">
             <button onClick={() => navigate(AppModule.OS3_INFO)} className={`hover:text-white transition-colors ${activeModule === AppModule.OS3_INFO ? 'text-white' : ''}`}>OS³ Dash</button>
-            <button onClick={() => navigate(AppModule.APPS_LIST)} className={`hover:text-white transition-colors ${activeModule === AppModule.APPS_LIST ? 'text-white' : ''}`}>Apps</button>
-            <button onClick={() => navigate(AppModule.SERVICES_HUB)} className={`hover:text-white transition-colors ${activeModule === AppModule.SERVICES_HUB ? 'text-white' : ''}`}>Services</button>
+            <button onClick={() => navigate(AppModule.APPS_LIST)} className={`hover:text-white transition-colors ${activeModule === AppModule.APPS_LIST ? 'text-white' : ''}`}>Products</button>
+            <button onClick={() => navigate(AppModule.WORKSPACE)} className={`hover:text-white transition-colors ${activeModule === AppModule.WORKSPACE ? 'text-white' : ''}`}>Demo</button>
+            <button onClick={() => navigate(AppModule.SERVICES_HUB)} className={`hover:text-white transition-colors ${activeModule === AppModule.SERVICES_HUB ? 'text-white' : ''}`}>Advisory</button>
           </nav>
         </div>
 
@@ -72,19 +78,24 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
               <button
                 key={f}
                 onClick={() => setFontSize(f)}
-                className={`px-4 py-1 text-xs font-bold uppercase transition-all ${fontSize === f ? 'bg-white text-black' : 'text-gray-600 hover:text-white'}`}
+                className={`px-4 py-1 text-[10px] font-bold uppercase transition-all ${fontSize === f ? 'bg-white text-black' : 'text-gray-600 hover:text-white'}`}
               >
                 {f}
               </button>
             ))}
           </div>
-          <div className="hidden sm:flex items-center gap-8">
-
-            <button onClick={() => navigate(AppModule.CONTACT)} className={`text-xs font-bold uppercase tracking-widest hover:text-white transition-colors ${activeModule === AppModule.CONTACT ? 'text-white' : 'text-gray-500'}`}>
-              Contact
+          <div className="hidden lg:flex items-center gap-8">
+            <button
+              onClick={() => navigate(AppModule.CONTACT)}
+              className={`text-[10px] font-bold uppercase tracking-widest border border-gray-800 px-6 py-3 hover:bg-white/5 transition-all text-gray-400 hover:text-white`}
+            >
+              Book Expert Advisor
             </button>
-            <button onClick={() => navigate(AppModule.WORKSPACE)} className="bg-white text-black px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors">
-              Demo
+            <button
+              onClick={() => navigate(AppModule.WORKSPACE)}
+              className="bg-white text-black px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
+            >
+              View OS³ Demo
             </button>
           </div>
           <button className="lg:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -98,9 +109,9 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
           {[
             { id: AppModule.HOME, label: "Home" },
             { id: AppModule.OS3_INFO, label: "OS³ Dash" },
-            { id: AppModule.APPS_LIST, label: "Apps" },
-            { id: AppModule.SERVICES_HUB, label: "Services" },
+            { id: AppModule.APPS_LIST, label: "Products" },
             { id: AppModule.WORKSPACE, label: "Demo" },
+            { id: AppModule.SERVICES_HUB, label: "Advisory" },
             { id: AppModule.CONTACT, label: "Contact" }
           ].map(m => (
             <button key={m.id} onClick={() => navigate(m.id)} className="text-xl font-bold text-white text-left uppercase tracking-widest">{m.label}</button>
@@ -115,35 +126,56 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
 
       <footer className="border-t border-gray-900 bg-black py-32 px-10">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16">
-          <div className="space-y-6">
+          <div className="space-y-8">
             <div className="flex items-center gap-3">
               <img src="/media/ui/jb3ai-mark.svg" alt="JB³Ai" className="h-[18px] w-auto" />
-              <h5 className="text-white text-xs font-bold tracking-[0.3em] uppercase">JB³Ai Corp</h5>
+              <h5 className="text-white text-xs font-bold tracking-[0.3em] uppercase">JB³Ai Corporation</h5>
             </div>
-            <p className="text-xs text-gray-600 max-w-sm leading-relaxed uppercase tracking-wider">The central operating layer for professional business intelligence and asset management.</p>
+            <p className="text-[10px] text-gray-600 max-w-sm leading-relaxed uppercase tracking-[0.2em]">The central operating layer for professional business intelligence and asset management.</p>
+            <div className="pt-4">
+              <button
+                onClick={() => navigate(AppModule.CONTACT)}
+                className="bg-white text-black px-8 py-4 text-[10px] font-bold uppercase tracking-widest hover:bg-gray-200 transition-colors"
+              >
+                Book Expert Advisor
+              </button>
+            </div>
           </div>
-          <div className="flex gap-24">
+          <div className="flex flex-wrap gap-24">
             <div className="space-y-6">
-              <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Platform</h6>
-              <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
-                <button onClick={() => navigate(AppModule.OS3_INFO)} className="hover:text-white transition-colors text-left">OS³ Dash</button>
-                <button onClick={() => navigate(AppModule.APPS_LIST)} className="hover:text-white transition-colors text-left">Apps</button>
-                <button onClick={() => navigate(AppModule.SERVICES_HUB)} className="hover:text-white transition-colors text-left">Services</button>
-                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left">Demo</button>
+              <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Platform</h6>
+              <div className="flex flex-col gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+                <button onClick={() => navigate(AppModule.OS3_INFO)} className="hover:text-white transition-colors text-left uppercase">OS³ Dash</button>
+                <button onClick={() => navigate(AppModule.APPS_LIST)} className="hover:text-white transition-colors text-left uppercase">Products</button>
+                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left uppercase">Demo</button>
               </div>
             </div>
             <div className="space-y-6">
-              <h6 className="text-xs font-bold text-gray-400 uppercase tracking-widest">Resources</h6>
-              <div className="flex flex-col gap-4 text-xs text-gray-600 font-bold uppercase tracking-widest">
-
-                <button onClick={() => navigate(AppModule.CONTACT)} className="hover:text-white transition-colors text-left">Advisory Portal</button>
+              <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Engagement</h6>
+              <div className="flex flex-col gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+                <button onClick={() => navigate(AppModule.SERVICES_HUB)} className="hover:text-white transition-colors text-left uppercase">Advisory</button>
+                <button onClick={() => navigate(AppModule.CONTACT)} className="hover:text-white transition-colors text-left uppercase">Contact</button>
+                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left uppercase">Briefings</button>
+              </div>
+            </div>
+            <div className="space-y-6">
+              <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Trust</h6>
+              <div className="flex flex-col gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
+                <button className="hover:text-white transition-colors text-left uppercase">Governance</button>
+                <button className="hover:text-white transition-colors text-left uppercase">Security</button>
+                <button className="hover:text-white transition-colors text-left uppercase">Compliance</button>
               </div>
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto pt-32 flex justify-between items-center text-xs text-gray-700 font-mono uppercase tracking-[0.2em]">
-          <span>&copy; {new Date().getFullYear()} JB³Ai Corporation</span>
-          <span>S-L MODES ENABLED</span>
+        <div className="max-w-6xl mx-auto pt-32 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-gray-900 mt-20">
+          <div className="text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
+            Sandboxed demonstrations. Advisory-led access.
+          </div>
+          <div className="flex items-center gap-12 text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
+            <span>&copy; {new Date().getFullYear()} JB³Ai Corporation</span>
+            <span>S-L MODES ENABLED</span>
+          </div>
         </div>
       </footer>
     </div>

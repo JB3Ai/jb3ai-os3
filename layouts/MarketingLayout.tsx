@@ -161,9 +161,10 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <div className="space-y-6">
               <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Trust</h6>
               <div className="flex flex-col gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-                <button className="hover:text-white transition-colors text-left uppercase">Governance</button>
-                <button className="hover:text-white transition-colors text-left uppercase">Security</button>
-                <button className="hover:text-white transition-colors text-left uppercase">Compliance</button>
+                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left uppercase">Trust & Integrity</button>
+                <button onClick={() => navigate(AppModule.SHIELD_AI)} className="hover:text-white transition-colors text-left uppercase">Governance</button>
+                <button onClick={() => navigate(AppModule.WORKSPACE)} className="hover:text-white transition-colors text-left uppercase">Security</button>
+                <button onClick={() => navigate(AppModule.SHIELD_AI)} className="hover:text-white transition-colors text-left uppercase">Compliance</button>
               </div>
             </div>
           </div>

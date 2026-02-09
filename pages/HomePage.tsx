@@ -13,6 +13,7 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     const [shouldAnimate, setShouldAnimate] = useState(true);
+    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
     useEffect(() => {
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -23,27 +24,41 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="w-full">
             {/* Hero Section with proper layering */}
             <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden">
-                {/* Video Background Layer - z-0, non-interactive */}
-                {!shouldAnimate ? (
+                {/* STATIC BACKDROP LAYER (z-0) - Always visible as base */}
+                <div className="absolute inset-0 z-0 bg-[#050505]">
                     <img
                         src="/media/hero/os3-core-static-v2.webp"
-                        className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-30 grayscale"
+                        className="w-full h-full object-cover opacity-20"
                         alt="System Backdrop"
                     />
-                ) : (
+                </div>
+
+                {/* VIDEO LAYER (z-1) */}
+                <div className="absolute inset-0 z-1 opacity-30">
                     <video
                         autoPlay
-                        muted
+                        muted={true}
                         loop
                         playsInline
                         preload="auto"
-                        poster="/media/hero/os3-hero-still-v1.jpg"
-                        className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0 opacity-30"
+                        className="w-full h-full object-cover pointer-events-none"
+                        onCanPlay={() => setIsVideoLoaded(true)}
+                        onLoadedData={() => {
+                            console.log("Hero video loaded data");
+                            setIsVideoLoaded(true);
+                        }}
+                        ref={(el) => {
+                            if (el) {
+                                el.muted = true;
+                                el.defaultMuted = true;
+                                el.play().catch(e => console.warn("Hero autoplay blocked", e));
+                            }
+                        }}
                     >
                         <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
                         <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
                     </video>
-                )}
+                </div>
 
                 {/* Dark Overlay Layer - z-5, non-interactive */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] pointer-events-none z-[5]" />
@@ -71,7 +86,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="max-w-6xl mx-auto px-10">
                 <FadeIn delay={0.2}>
                     <SectionVisual
-                        videoSrc="/media/hero/os3-hero-motion-v1.mp4"
                         imageSrc="/media/hero/os3-core-static-v2.webp"
                         label="OS³ SYSTEM CORE INTEGRITY v2.0"
                     />

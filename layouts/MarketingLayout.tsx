@@ -177,7 +177,7 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
                 <img src="/media/ui/jb3ai-mark.svg" alt="JB³Ai" className="h-[18px] w-auto" />
                 <h5 className="text-white text-xs font-bold tracking-[0.3em] uppercase">JB³Ai Corporation</h5>
               </div>
-              <p className="text-[10px] text-gray-600 max-w-sm leading-relaxed uppercase tracking-[0.2em]">JB³Ai builds governed intelligence systems for organizations operating at scale, complexity, and risk. We unify AI, operations, security, and decision-making into controlled, auditable environments.</p>
+              <p className="text-[10px] text-gray-600 max-w-sm leading-relaxed uppercase tracking-[0.2em]">JB³Ai builds governed operating environments for intelligence, operations, and secure execution. OS³ Dash unifies tools, teams, and data flows into a controlled system with auditability, access control, and high-fidelity outputs designed for real business decisions.</p>
               <div className="pt-4">
                 <button
                   onClick={() => navigate(AppModule.CONSULTING)}
@@ -219,18 +219,21 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
                 </div>
               </div>
               <div className="space-y-6">
-                <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Library</h6>
+                <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Downloads</h6>
                 <div className="flex flex-col gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-                  <a href="/brochures/JB3Ai_OS3_Dash.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">OS³ Dash PDF</a>
-                  <a href="/brochures/JB3Ai_InvestigatorAi.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">InvestigatorAi PDF</a>
-                  <a href="/brochures/JB3Ai_Investment_Deck.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">Investment Deck</a>
+                  <a href="/brochures/jb3ai-os3-dash-the-operating-system.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">OS³ Dash</a>
+                  <a href="/brochures/jb3ai-investigatorai-app-dash-v1.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">Investigator AI</a>
+                  <a href="/brochures/jb3ai-shieldai-silent-protection.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">Shield AI</a>
+                  <a href="/brochures/jb3ai-mindcareai-personal-support-and-growth.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">MindCare AI</a>
+                  <a href="/brochures/jb3ai-consulting-and-accelerator.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">Consulting & Accelerator</a>
+                  <a href="/brochures/jb3ai-investment-deck-intelligence-in-motion.pdf" target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">Investment Deck</a>
                 </div>
               </div>
             </div>
           </div>
           <div className="max-w-6xl mx-auto pt-32 flex flex-col md:flex-row justify-between items-center gap-8 border-t border-gray-900 mt-20">
             <div className="text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
-              All demonstrations use sandboxed data. Deployments are governed, auditable, and subject to NDA. No client, institutional, or sensitive data is exposed in public environments.
+              Demonstrations use sandboxed data and policy-governed workflows. Detailed architecture, configurations, and client deployments are shared under NDA with role-based access and full audit logging.
             </div>
             <div className="flex items-center gap-12 text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
               <span>&copy; {new Date().getFullYear()} JB³Ai Corporation</span>

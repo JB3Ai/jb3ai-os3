@@ -11,13 +11,20 @@ export enum AppModule {
   CONSULTING = 'CONSULTING',
   ACCELERATOR = 'ACCELERATOR',
   CONTACT = 'CONTACT',
-  
+
   // Functional Workspace (OS³ Dash)
   WORKSPACE = 'WORKSPACE',
   NEURAL_CORE = 'NEURAL_CORE',
   MEDIA_LAB = 'MEDIA_LAB',
+  PHONE_SYSTEM = 'PHONE_SYSTEM',
   MOTION_LAB = 'MOTION_LAB',
-  CLIENT_ZONE = 'CLIENT_ZONE'
+  CLIENT_ZONE = 'CLIENT_ZONE',
+
+  // Policy Pages
+  TRUST = 'TRUST',
+  GOVERNANCE = 'GOVERNANCE',
+  SECURITY = 'SECURITY',
+  COMPLIANCE = 'COMPLIANCE'
 }
 
 export interface VideoGenerationConfig {

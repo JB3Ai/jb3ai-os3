@@ -5,6 +5,7 @@ import { DashboardBackdrop } from '../components/ui/DashboardBackdrop';
 import { SectionHeader } from '../components/ui/SectionHeader';
 import { CtaBlock } from '../components/ui/CtaBlock';
 import { FadeIn } from '../components/ui/FadeIn';
+import BrochureButton from '../src/components/BrochureButton';
 
 interface OS3DashInfoPageProps {
     onNavigate: (m: AppModule) => void;
@@ -19,6 +20,9 @@ export const OS3DashInfoPage: React.FC<OS3DashInfoPageProps> = ({ onNavigate }) 
                     <FadeIn className="space-y-6">
                         <h1 className="text-3xl md:text-6xl font-bold text-white tracking-tighter uppercase leading-none">OS³ Dash</h1>
                         <p className="text-sm md:text-base text-cyan-500 font-bold tracking-[0.3em] uppercase">The governed operating system for intelligence, operations, and decision-making.</p>
+                        <div className="pt-8">
+                            <BrochureButton k="os3dash" />
+                        </div>
                     </FadeIn>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
@@ -101,12 +105,15 @@ export const OS3DashInfoPage: React.FC<OS3DashInfoPageProps> = ({ onNavigate }) 
                                 <p>
                                     The OS³ Dash demo operates within a controlled sandbox environment. No live client data is exposed. Capabilities are intentionally scoped to demonstrate system behaviour, governance enforcement, and operational flow.
                                 </p>
-                                <div className="pt-8">
+                                <div className="pt-8 flex flex-col md:flex-row items-center md:items-start gap-8">
                                     <CtaBlock
                                         onNavigate={onNavigate}
                                         align="left"
                                         type="alternative"
                                     />
+                                    <div className="md:pt-0">
+                                        <BrochureButton k="os3dash" />
+                                    </div>
                                 </div>
                             </FadeIn>
                         </div>

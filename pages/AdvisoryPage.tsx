@@ -7,6 +7,8 @@ import { SectionHeader } from '../components/ui/SectionHeader';
 import { CtaBlock } from '../components/ui/CtaBlock';
 import { CredibilityStrip } from '../components/ui/CredibilityStrip';
 import { FadeIn } from '../components/ui/FadeIn';
+import BrochureButton from '../src/components/BrochureButton';
+import { Divider } from '../components/ui/Divider';
 
 interface AdvisoryPageProps {
     onNavigate: (m: AppModule) => void;
@@ -29,7 +31,7 @@ export const AdvisoryPage: React.FC<AdvisoryPageProps> = ({ onNavigate }) => {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-24">
                         <FadeIn delay={0.1}>
-                            <h2 className="text-2xl md:text-4xl font-bold text-white tracking-tighter uppercase leading-tight">
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
                                 Structure <br /> <span className="text-gray-500">Before Software.</span>
                             </h2>
                         </FadeIn>
@@ -41,7 +43,7 @@ export const AdvisoryPage: React.FC<AdvisoryPageProps> = ({ onNavigate }) => {
                                 Our master tune-up service includes business diagnostics and systems alignment sessions to ensure the OS³ Dashboard and its AI Agents serve a coherent, high-performance strategy.
                             </p>
 
-                            <div className="pt-8">
+                            <div className="pt-8 flex flex-wrap gap-4">
                                 <motion.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
@@ -50,11 +52,14 @@ export const AdvisoryPage: React.FC<AdvisoryPageProps> = ({ onNavigate }) => {
                                 >
                                     Book Expert Advisor
                                 </motion.button>
+                                <BrochureButton k="consulting" />
                             </div>
                         </FadeIn>
                     </div>
                 </div>
             </section>
+
+            <Divider />
 
             <div className="max-w-5xl mx-auto py-32 px-10 space-y-40 relative z-10">
                 {/* Section 2. How Engagement Works - Standard width, Narrative paragraphs */}
@@ -118,12 +123,12 @@ export const AdvisoryPage: React.FC<AdvisoryPageProps> = ({ onNavigate }) => {
                     </div>
                 </section>
 
-                <CredibilityStrip label="OPERATING STANDARD" />
+                <Divider />
 
                 {/* Section 5. Final CTA Block - Centered */}
                 <section className="py-24 text-center space-y-20 relative z-10">
                     <FadeIn className="space-y-8">
-                        <h2 className="text-3xl md:text-6xl font-bold text-white uppercase tracking-tighter leading-none">
+                        <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-none">
                             Begin the <br /> <span className="text-gray-500">Advisory Conversation</span>
                         </h2>
                         <p className="text-xs md:text-sm text-gray-500 uppercase tracking-[0.15em] leading-relaxed font-medium max-w-xl mx-auto">
@@ -132,14 +137,17 @@ export const AdvisoryPage: React.FC<AdvisoryPageProps> = ({ onNavigate }) => {
                     </FadeIn>
 
                     <FadeIn delay={0.2} className="space-y-8">
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => onNavigate(AppModule.CONTACT)}
-                            className="bg-white text-black px-20 py-8 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-200 transition-all active:scale-[0.98] shadow-2xl"
-                        >
-                            Book Expert Advisor
-                        </motion.button>
+                        <div className="flex flex-wrap justify-center gap-6 items-center">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => onNavigate(AppModule.CONTACT)}
+                                className="bg-white text-black px-20 py-8 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-200 transition-all active:scale-[0.98] shadow-2xl"
+                            >
+                                Book Expert Advisor
+                            </motion.button>
+                            <BrochureButton k="consulting" />
+                        </div>
                         <p className="text-[9px] text-gray-700 uppercase tracking-[0.4em] font-mono leading-relaxed">
                             Sandboxed demonstrations. Advisory-led access.
                         </p>

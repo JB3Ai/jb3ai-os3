@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Book a Call</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Fallback redirect (some browsers block JS) -->
+  <meta http-equiv="refresh" content="1; url=https://calendar.app.google/jTPYeSMUMQovxfVm9">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .box {
+      max-width: 420px;
+      padding: 24px;
+    }
+    a {
+      color: #66ff66;
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <p>Redirecting you to the booking page…</p>
+    <p>If nothing happens, <a id="manualLink" href="#">tap here to continue</a>.</p>
+  </div>
+
+  <script>
+    const target = "https://calendar.app.google/jTPYeSMUMQovxfVm9";
+    document.getElementById("manualLink").href = target;
+
+    // JS redirect (preferred)
+    window.location.replace(target);
+  </script>
+</body>
+</html>

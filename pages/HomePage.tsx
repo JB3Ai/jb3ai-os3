@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Zap, ArrowUpRight } from 'lucide-react';
 import { AppModule } from '../types';
 import { CtaBlock } from '../components/ui/CtaBlock';
+import { Divider } from '../components/ui/Divider';
 import SectionVisual from '../components/sections/SectionVisual';
 import { FadeIn } from '../components/ui/FadeIn';
+import BrochureButton from '../src/components/BrochureButton';
 
 interface HomePageProps {
     onNavigate: (m: AppModule) => void;
@@ -13,7 +15,6 @@ interface HomePageProps {
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     const [shouldAnimate, setShouldAnimate] = useState(true);
-    const [isVideoLoaded, setIsVideoLoaded] = useState(false);
 
     useEffect(() => {
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -23,81 +24,92 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return (
         <div className="w-full">
             {/* Hero Section with proper layering */}
-            <section className="relative min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden">
-                {/* STATIC BACKDROP LAYER (z-0) - Always visible as base */}
-                <div className="absolute inset-0 z-0 bg-[#050505]">
-                    <img
-                        src="/media/hero/os3-core-static-v2.webp"
-                        className="w-full h-full object-cover opacity-20"
-                        alt="System Backdrop"
-                    />
+            <section className="os3-hero relative min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden">
+                <div className="hero-bg absolute inset-0 z-0 pointer-events-none">
+                    {/* Background Visual Layer */}
+                    {!shouldAnimate ? (
+                        <img
+                            src="/media/hero/os3-core-static-v2.webp"
+                            className="cube-static absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
+                            alt="System Backdrop"
+                        />
+                    ) : (
+                        <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            preload="auto"
+                            poster="/media/hero/os3-hero-still-v1.jpg"
+                            className="absolute inset-0 w-full h-full object-cover opacity-30"
+                        >
+                            <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
+                            <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
+                        </video>
+                    )}
+
+                    {/* Dark Overlay Layer */}
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] z-[5] pointer-events-none" />
                 </div>
 
-                {/* VIDEO LAYER (z-1) */}
-                <div className="absolute inset-0 z-1 opacity-30">
-                    <video
-                        autoPlay
-                        muted={true}
-                        loop
-                        playsInline
-                        preload="auto"
-                        className="w-full h-full object-cover pointer-events-none"
-                        onCanPlay={() => setIsVideoLoaded(true)}
-                        onLoadedData={() => {
-                            console.log("Hero video loaded data");
-                            setIsVideoLoaded(true);
-                        }}
-                        ref={(el) => {
-                            if (el) {
-                                el.muted = true;
-                                el.defaultMuted = true;
-                                el.play().catch(e => console.warn("Hero autoplay blocked", e));
-                            }
-                        }}
-                    >
-                        <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
-                        <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
-                    </video>
+                <div className="hero-fg hero-content relative z-10 pointer-events-auto">
+                    <FadeIn className="space-y-12" duration={0.8}>
+                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
+                            <Zap className="w-4 h-4 text-cyan-400" /> OS³ Stable v2.0
+                        </div>
+                        <motion.h1
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                            className="hero-title text-jb3-light text-4xl md:text-5xl font-bold tracking-tighter uppercase leading-[0.9] max-w-4xl mx-auto drop-shadow-2xl"
+                        >
+                            INTELLIGENCE <br /> MANAGED.
+                        </motion.h1>
+                        <p className="hero-subtitle text-jb3-coolgray text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed drop-shadow-lg mt-4">
+                            The central operating layer for professional teams requiring high-fidelity intelligence, security, and asset production.
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-6 items-center pt-12">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => onNavigate(AppModule.WORKSPACE)}
+                                className="btn-primary px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors"
+                            >
+                                INITIALIZE LIVE DEMO
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={() => onNavigate(AppModule.CONTACT)}
+                                className="border border-jb3-light text-jb3-light px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-jb3-divider transition-all"
+                            >
+                                BOOK TECHNICAL BRIEFING
+                            </motion.button>
+                        </div>
+                    </FadeIn>
                 </div>
-
-                {/* Dark Overlay Layer - z-5, non-interactive */}
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] pointer-events-none z-[5]" />
-
-                {/* Content Layer - z-10, interactive */}
-                <FadeIn className="space-y-12 relative z-10 pointer-events-auto" duration={0.8}>
-                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
-                        <Zap className="w-4 h-4 text-cyan-400" /> OS³ Stable v2.0
-                    </div>
-                    <motion.h1
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="text-3xl md:text-5xl font-bold text-white tracking-tighter uppercase leading-[0.9] max-w-4xl mx-auto drop-shadow-2xl"
-                    >
-                        Intelligence <br /> <span className="text-gray-500">Managed.</span>
-                    </motion.h1>
-                    <p className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto font-light leading-relaxed drop-shadow-lg">
-                        The central operating layer for professional teams requiring high-fidelity intelligence, security, and asset production.
-                    </p>
-                    <CtaBlock onNavigate={onNavigate} className="pt-12" />
-                </FadeIn>
             </section>
+
+            <Divider />
 
             <div className="max-w-6xl mx-auto px-10">
                 <FadeIn delay={0.2}>
                     <SectionVisual
+                        videoSrc="/media/hero/os3-hero-motion-v1.mp4"
                         imageSrc="/media/hero/os3-core-static-v2.webp"
                         label="OS³ SYSTEM CORE INTEGRITY v2.0"
                     />
                 </FadeIn>
             </div>
 
+            <Divider />
+
             <section className="w-full py-40 flex justify-center">
                 <div className="max-w-4xl w-full px-10 space-y-16">
                     <FadeIn direction="left" className="w-12 h-[1px] bg-gray-800" />
                     <FadeIn>
-                        <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-tighter leading-none">
-                            Why <span className="text-gray-500">OS³ Exists</span>
+                        <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                            WHY OS³ EXISTS
                         </h2>
                     </FadeIn>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
@@ -121,12 +133,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
             </section>
 
+            <Divider />
+
             <section className="w-full pb-40 flex justify-center">
                 <div className="max-w-4xl w-full px-10 space-y-16">
                     <FadeIn direction="left" className="w-12 h-[1px] bg-gray-800" />
                     <FadeIn>
-                        <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-tighter leading-none">
-                            What <span className="text-gray-500">OS³ Dash Replaces</span>
+                        <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                            WHAT OS³ DASH REPLACES
                         </h2>
                     </FadeIn>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
@@ -163,8 +177,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <div className="max-w-6xl w-full px-10 space-y-24">
                     <div className="space-y-6">
                         <FadeIn>
-                            <h2 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-tighter leading-none">
-                                Core <span className="text-gray-500">Capabilities</span>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                CORE CAPABILITIES
                             </h2>
                         </FadeIn>
                         <FadeIn delay={0.1} className="space-y-4 max-w-3xl">
@@ -225,12 +239,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
             </section>
 
+            <Divider />
+
             <section className="w-full bg-[#080808] py-40 flex justify-center">
                 <div className="max-w-6xl w-full px-10 space-y-24">
                     <div className="space-y-6 text-center md:text-left">
                         <FadeIn>
-                            <h2 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-tighter leading-none">
-                                Products <br /><span className="text-gray-500">& Capabilities</span>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                PRODUCTS & CAPABILITIES
                             </h2>
                         </FadeIn>
                         <FadeIn delay={0.1}>
@@ -266,12 +282,22 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                                 <p className="text-[11px] md:text-xs text-gray-500 uppercase tracking-widest leading-relaxed">
                                     {prod.desc}
                                 </p>
-                                <button
-                                    onClick={() => onNavigate(prod.id)}
-                                    className="text-[9px] font-bold text-white/40 uppercase tracking-[0.3em] hover:text-white flex items-center gap-2 group-hover:gap-4 transition-all"
-                                >
-                                    Access Module <ArrowUpRight className="w-3 h-3" />
-                                </button>
+                                <div className="flex flex-wrap gap-4 items-center">
+                                    <button
+                                        onClick={() => onNavigate(prod.id)}
+                                        className="text-[9px] font-bold text-white/40 uppercase tracking-[0.3em] hover:text-white flex items-center gap-2 group-hover:gap-4 transition-all"
+                                    >
+                                        Access Module <ArrowUpRight className="w-3 h-3" />
+                                    </button>
+                                    {(() => {
+                                        const kMap: any = {
+                                            [AppModule.INVESTIGATOR_AI]: 'investigator',
+                                            [AppModule.SHIELD_AI]: 'shield',
+                                            [AppModule.MINDCARE_AI]: 'mindcare'
+                                        };
+                                        return <BrochureButton k={kMap[prod.id]} label="PDF" className="px-3 py-2 text-[10px]" />;
+                                    })()}
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -283,8 +309,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     <div className="flex flex-col items-center space-y-6">
                         <FadeIn direction="up" className="w-12 h-[1px] bg-gray-800" />
                         <FadeIn>
-                            <h2 className="text-2xl md:text-4xl font-bold text-white uppercase tracking-tighter leading-none">
-                                Demonstration <span className="text-gray-500">Access</span>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                DEMONSTRATION ACCESS
                             </h2>
                         </FadeIn>
                     </div>
@@ -300,12 +326,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
             </section>
 
+            <Divider />
+
             <section className="w-full bg-[#050505] py-40 flex justify-center border-t border-gray-900/50">
                 <div className="max-w-4xl w-full px-10 space-y-16">
                     <div className="space-y-6">
                         <FadeIn>
-                            <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-tighter leading-none">
-                                Who the <span className="text-gray-500">Demo Is For</span>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                WHO THE DEMO IS FOR
                             </h2>
                         </FadeIn>
                         <FadeIn delay={0.1}>
@@ -342,12 +370,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
             </section>
 
+            <Divider />
+
             <section className="w-full bg-[#080808] py-40 flex justify-center border-t border-gray-900/50">
                 <div className="max-w-4xl w-full px-10 space-y-16">
                     <div className="space-y-6">
                         <FadeIn>
-                            <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-tighter leading-none">
-                                Engagement <span className="text-gray-500">Model</span>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                ENGAGEMENT MODEL
                             </h2>
                         </FadeIn>
                         <FadeIn delay={0.1}>
@@ -390,12 +420,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
             </section>
 
+            <Divider />
+
             <section className="w-full bg-[#080808] py-40 flex justify-center border-t border-gray-900/50">
                 <div className="max-w-4xl w-full px-10 space-y-12">
                     <div className="space-y-6">
                         <FadeIn>
-                            <h2 className="text-xl md:text-2xl font-bold text-white uppercase tracking-widest leading-none">
-                                Trust, Governance <span className="text-gray-500">& Responsible Access</span>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                TRUST, GOVERNANCE & RESPONSIBLE ACCESS
                             </h2>
                         </FadeIn>
                     </div>
@@ -407,13 +439,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 </div>
             </section>
 
+            <Divider />
+
             <section className="w-full bg-[#050505] py-60 flex justify-center border-t border-gray-900/50 relative overflow-hidden">
                 <div className="max-w-4xl w-full px-10 space-y-24 relative z-10">
                     <div className="space-y-12">
                         <div className="space-y-6">
                             <FadeIn>
-                                <h2 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-tighter leading-none">
-                                    How to <span className="text-gray-500">Engage</span>
+                                <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                    HOW TO ENGAGE
                                 </h2>
                             </FadeIn>
                             <FadeIn delay={0.1}>
@@ -456,9 +490,9 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                     <div className="pt-24 border-t border-gray-900/50 space-y-16 text-center">
                         <FadeIn>
-                            <h3 className="text-3xl md:text-5xl font-bold text-white uppercase tracking-tighter leading-none">
-                                Experience <span className="text-gray-500">OS³</span>
-                            </h3>
+                            <h2 className="section-heading text-2xl font-semibold uppercase tracking-tighter leading-tight">
+                                EXPERIENCE <span className="text-gray-500">OS³</span>
+                            </h2>
                         </FadeIn>
 
                         <CtaBlock onNavigate={onNavigate} className="pt-8" />

@@ -6,6 +6,9 @@ import { AppModule } from '../types';
 import { DashboardBackdrop } from '../components/ui/DashboardBackdrop';
 import { CtaBlock } from '../components/ui/CtaBlock';
 import { FadeIn } from '../components/ui/FadeIn';
+import BrochureButton from '../src/components/BrochureButton';
+import { BrochureKey } from '../src/content/brochures';
+import { Divider } from '../components/ui/Divider';
 import { PRODUCT_CONTENT, PAGE_METADATA, SHARED_TRUST_LINE } from '../data/content';
 
 interface GenericDetailPageProps {
@@ -89,14 +92,26 @@ export const GenericDetailPage: React.FC<GenericDetailPageProps> = ({ module, on
                         </h1>
                     </FadeIn>
                     <FadeIn delay={0.1} className="space-y-12">
-                        <h2 className="text-xl md:text-3xl font-bold text-white/90 uppercase tracking-tight leading-tight max-w-2xl">
+                        <h2 className="section-heading text-2xl font-semibold uppercase tracking-tight leading-tight max-w-2xl">
                             {content.subheading}
                         </h2>
                         <p className="text-base md:text-lg font-light leading-relaxed max-w-3xl uppercase tracking-tight whitespace-pre-line">
                             {content.description}
                         </p>
+                        <div className="pt-8">
+                            {(() => {
+                                let bKey: BrochureKey | undefined;
+                                if (module === AppModule.MINDCARE_AI) bKey = 'mindcare';
+                                if (module === AppModule.SHIELD_AI) bKey = 'shield';
+                                if (module === AppModule.INVESTIGATOR_AI) bKey = 'investigator';
+                                if (module === AppModule.ACCELERATOR || module === AppModule.CONSULTING) bKey = 'consulting';
+                                return <BrochureButton k={bKey} />;
+                            })()}
+                        </div>
                     </FadeIn>
                 </div>
+
+                <Divider />
 
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-20 pt-32 border-t border-gray-900">
                     <FadeIn delay={0.2} className="space-y-10">
@@ -133,14 +148,25 @@ export const GenericDetailPage: React.FC<GenericDetailPageProps> = ({ module, on
                         </p>
                     </FadeIn>
                     <FadeIn delay={0.5} className="flex flex-col gap-6 w-full md:w-auto">
-                        <motion.button
-                            whileHover={{ scale: 1.02 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => onNavigate(AppModule.WORKSPACE)}
-                            className="bg-white text-black text-[10px] font-bold px-10 py-4 uppercase tracking-[0.2em] hover:bg-cyan-500 hover:text-white transition-all shadow-xl whitespace-nowrap"
-                        >
-                            {content.ctaPrimary}
-                        </motion.button>
+                        <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                onClick={() => onNavigate(AppModule.WORKSPACE)}
+                                className="bg-white text-black text-[10px] font-bold px-10 py-4 uppercase tracking-[0.2em] hover:bg-cyan-500 hover:text-white transition-all shadow-xl whitespace-nowrap"
+                            >
+                                {content.ctaPrimary}
+                            </motion.button>
+
+                            {(() => {
+                                let bKey: BrochureKey | undefined;
+                                if (module === AppModule.MINDCARE_AI) bKey = 'mindcare';
+                                if (module === AppModule.SHIELD_AI) bKey = 'shield';
+                                if (module === AppModule.INVESTIGATOR_AI) bKey = 'investigator';
+                                if (module === AppModule.ACCELERATOR || module === AppModule.CONSULTING) bKey = 'consulting';
+                                return <BrochureButton k={bKey} />;
+                            })()}
+                        </div>
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}

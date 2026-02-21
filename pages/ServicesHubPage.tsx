@@ -6,6 +6,7 @@ import { AppModule } from '../types';
 import { DashboardBackdrop } from '../components/ui/DashboardBackdrop';
 import { CtaBlock } from '../components/ui/CtaBlock';
 import { FadeIn } from '../components/ui/FadeIn';
+import BrochureButton from '../src/components/BrochureButton';
 
 interface ServicesHubPageProps {
     onNavigate: (m: AppModule) => void;
@@ -65,8 +66,9 @@ export const ServicesHubPage: React.FC<ServicesHubPageProps> = ({ onNavigate }) 
                                 Our engineering team provides end-to-end deployment support across on-premise, hybrid, and private-cloud environments.
                             </p>
                         </div>
-                        <div className="flex flex-col justify-center">
+                        <div className="flex flex-col justify-center gap-6">
                             <CtaBlock onNavigate={onNavigate} align="left" />
+                            <BrochureButton k="consulting" label="Service Guide (PDF)" />
                         </div>
                     </FadeIn>
                 </section>

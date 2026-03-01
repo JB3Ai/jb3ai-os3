@@ -89,9 +89,7 @@ export default function SectionVisual({
               playsInline
               preload="auto"
             >
-              <source src={videoSrc} type="video/mp4" />
-              {/* Attempt to use the WebM version if available by replacing extension */}
-              <source src={videoSrc.replace('.mp4', '.webm')} type="video/webm" />
+              <source src={videoSrc} type="video/webm" />
             </video>
           </div>
         ) : null}

@@ -230,7 +230,7 @@ export const MotionLab: React.FC = () => {
             <div className="w-full aspect-video shadow-[0_0_100px_rgba(0,0,0,0.8)] border border-gray-900 bg-black overflow-hidden relative group">
                <video src={videoUrl} controls autoPlay loop className="w-full h-full object-cover" />
                <div className="absolute top-4 right-4 flex gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                 <a href={videoUrl} download="os3_monolith_loop.mp4" className="bg-black/80 hover:bg-white hover:text-black p-4 transition-colors">
+                 <a href={videoUrl.replace('.mp4', '.webm')} download="os3_monolith_loop.webm" className="bg-black/80 hover:bg-white hover:text-black p-4 transition-colors">
                     <Download className="w-5 h-5" />
                  </a>
                </div>

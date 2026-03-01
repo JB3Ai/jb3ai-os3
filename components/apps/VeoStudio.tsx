@@ -237,7 +237,7 @@ export const VeoStudio: React.FC = () => {
                             className="w-full h-full object-contain"
                         />
                          <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                             <a href={videoUrl} download="veo_generation.mp4" className="bg-black/80 hover:bg-cyan-500 text-white p-2 rounded-full inline-flex">
+                             <a href={videoUrl.replace('.mp4', '.webm')} download="veo_generation.webm" className="bg-black/80 hover:bg-cyan-500 text-white p-2 rounded-full inline-flex">
                                  <Download className="w-5 h-5" />
                              </a>
                          </div>

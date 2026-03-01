@@ -8,7 +8,7 @@ import { CtaBlock } from '../components/ui/CtaBlock';
 import { FadeIn } from '../components/ui/FadeIn';
 import BrochureButton from '../src/components/BrochureButton';
 import { BrochureKey } from '../src/content/brochures';
-import { Divider } from '../components/ui/Divider';
+import { SectionDivider as Divider } from '../components/ui/SectionDivider';
 import { PRODUCT_CONTENT, PAGE_METADATA, SHARED_TRUST_LINE } from '../data/content';
 
 interface GenericDetailPageProps {

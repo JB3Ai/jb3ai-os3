@@ -8,7 +8,7 @@ import { CtaBlock } from '../components/ui/CtaBlock';
 import { CredibilityStrip } from '../components/ui/CredibilityStrip';
 import { FadeIn } from '../components/ui/FadeIn';
 import BrochureButton from '../src/components/BrochureButton';
-import { Divider } from '../components/ui/Divider';
+import { SectionDivider as Divider } from '../components/ui/SectionDivider';
 
 interface AdvisoryPageProps {
     onNavigate: (m: AppModule) => void;

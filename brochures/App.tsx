@@ -3,19 +3,6 @@ import React, { useState } from 'react';
 import InteractiveBackground from './components/InteractiveBackground';
 import { Brochure } from './types';
 
-// Fix: Expand JSX namespace to include the 'iconify-icon' custom element properly for the compiler.
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      'iconify-icon': React.DetailedHTMLProps<React.HTMLAttributes<HTMLElement> & { 
-        icon?: string; 
-        class?: string;
-        className?: string;
-      }, HTMLElement>;
-    }
-  }
-}
-
 const BROCHURES: Brochure[] = [
   {
     id: 'os3-dash',

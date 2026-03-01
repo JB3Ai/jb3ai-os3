@@ -1,10 +1,10 @@
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Zap, ArrowUpRight } from 'lucide-react';
 import { AppModule } from '../types';
 import { CtaBlock } from '../components/ui/CtaBlock';
-import { Divider } from '../components/ui/Divider';
+import { SectionDivider as Divider } from '../components/ui/SectionDivider';
 import SectionVisual from '../components/sections/SectionVisual';
 import { FadeIn } from '../components/ui/FadeIn';
 import BrochureButton from '../src/components/BrochureButton';
@@ -14,39 +14,17 @@ interface HomePageProps {
 }
 
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
-    const [shouldAnimate, setShouldAnimate] = useState(true);
-
-    useEffect(() => {
-        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        setShouldAnimate(!prefersReducedMotion);
-    }, []);
-
     return (
         <div className="w-full">
             {/* Hero Section with proper layering */}
             <section className="os3-hero relative min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden">
                 <div className="hero-bg absolute inset-0 z-0 pointer-events-none">
                     {/* Background Visual Layer */}
-                    {!shouldAnimate ? (
-                        <img
-                            src="/media/hero/os3-core-static-v2.webp"
-                            className="cube-static absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
-                            alt="System Backdrop"
-                        />
-                    ) : (
-                        <video
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            preload="auto"
-                            poster="/media/hero/os3-hero-still-v1.jpg"
-                            className="absolute inset-0 w-full h-full object-cover opacity-30"
-                        >
-                            <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
-                            <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
-                        </video>
-                    )}
+                    <img
+                        src="/media/hero/os3-core-static-v2.webp"
+                        className="cube-static absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
+                        alt="System Backdrop"
+                    />
 
                     {/* Dark Overlay Layer */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] z-[5] pointer-events-none" />

@@ -73,7 +73,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="max-w-6xl mx-auto px-10">
                 <FadeIn delay={0.2}>
                     <SectionVisual
-                        videoSrc="/media/hero/os3-hero-motion-v1.mp4"
                         imageSrc="/media/hero/os3-core-static-v2.webp"
                         label="OS³ SYSTEM CORE INTEGRITY v2.0"
                     />

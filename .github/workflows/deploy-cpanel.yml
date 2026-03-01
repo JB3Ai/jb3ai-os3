@@ -28,7 +28,7 @@ jobs:
         run: npm run build
 
       - name: Build brochures app
-        run: cd brochures && npm ci && npm run build && cd ..
+        run: cd brochures && npm install && npm run build && cd ..
 
       - name: Deploy main dist to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

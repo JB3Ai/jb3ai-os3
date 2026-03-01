@@ -40,7 +40,7 @@ jobs:
           port: 21
           security: loose
           local-dir: ./dist/
-          server-dir: ./
+          server-dir: ./public_html/
           timeout: 600000
           log-level: verbose
           dangerous-clean-slate: false
@@ -60,7 +60,7 @@ jobs:
           port: 21
           security: loose
           local-dir: ./brochures/dist/
-          server-dir: ./brochures/
+          server-dir: ./public_html/brochures/
           timeout: 600000
           log-level: verbose
           dangerous-clean-slate: false

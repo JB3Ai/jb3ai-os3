@@ -37,7 +37,7 @@ jobs:
           port: 21
           security: loose
           local-dir: ./dist/
-          server-dir: dadchefai/
+          server-dir: ./
           timeout: 600000
           log-level: verbose
           dangerous-clean-slate: false

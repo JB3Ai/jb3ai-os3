@@ -36,7 +36,7 @@ jobs:
           protocol: ftp
           port: 21
           local-dir: ./dist/
-          server-dir: ${{ secrets.CPANEL_TARGET_DIR }}
+          server-dir: ./dadchefai/
           exclude: |
             **/.git*/**
             **/.git*

@@ -3,7 +3,6 @@ import React from 'react';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppModule } from '../types';
-import { BROCHURES } from '../src/content/brochures';
 
 interface MarketingLayoutProps {
   children: React.ReactNode;
@@ -222,9 +221,9 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
               <div className="space-y-6">
                 <h6 className="text-[10px] font-bold text-gray-400 uppercase tracking-[0.3em]">Library</h6>
                 <div className="flex flex-col gap-4 text-[10px] text-gray-600 font-bold uppercase tracking-widest">
-                  <a href={BROCHURES.os3dash} target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">OS³ Dash PDF</a>
-                  <a href={BROCHURES.investigator} target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">InvestigatorAi PDF</a>
-                  <a href={BROCHURES.investment} target="_blank" rel="noreferrer" className="hover:text-white transition-colors text-left uppercase">Investment Deck</a>
+                  <a href="/brochures/" className="hover:text-white transition-colors text-left uppercase">Browse Brochures</a>
+                  <a href="/brochures/" className="hover:text-white transition-colors text-left uppercase">Documentation Hub</a>
+                  <a href="/brochures/" className="hover:text-white transition-colors text-left uppercase">Download PDF Library</a>
                 </div>
               </div>
             </div>

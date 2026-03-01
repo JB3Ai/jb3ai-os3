@@ -37,15 +37,30 @@ export default function SectionVisual({
 
       const handleError = (e: any) => {
         console.error("[SectionVisual] Video error:", e);
+        // Show fallback image even if video errors
+        setVideoLoaded(false);
       };
 
       video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
+      // Fallback: show video after 2 seconds even if canplay hasn't fired
+      const timeoutId = setTimeout(() => {
+        console.log("[SectionVisual] Timeout - forcing video visible");
+        setVideoLoaded(true);
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Ignore autoplay errors on fallback
+          });
+        }
+      }, 2000);
+
       // Try loading immediately
       video.load();
 
       return () => {
+        clearTimeout(timeoutId);
         video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
       };

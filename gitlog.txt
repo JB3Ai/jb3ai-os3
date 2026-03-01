@@ -1,0 +1,5 @@
+﻿8a9e09f feat: consolidate updates, clean vite structure, fix typography, manage pdfs
+4d801c7 Update media and UI changes
+28168f8 Ignore build artifacts and remove dist.zip from repo
+b598c3d Add initial .gitignore file
+d26f716 Stable deploy build with brochures page - 2026-02-17

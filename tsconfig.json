@@ -21,7 +21,11 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx"
+    "src",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "brochures",
+    "node_modules"
   ]
 }

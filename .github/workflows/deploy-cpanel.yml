@@ -63,4 +63,4 @@ jobs:
           server-dir: ./public_html/brochures/
           timeout: 600000
           log-level: verbose
-          dangerous-clean-slate: false
+          dangerous-clean-slate: true

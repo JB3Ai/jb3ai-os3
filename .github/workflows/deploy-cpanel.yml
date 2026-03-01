@@ -35,8 +35,9 @@ jobs:
           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
           protocol: ftps
           port: 21
+          security: loose
           local-dir: ./dist/
-          server-dir: ./dadchefai/
+          server-dir: dadchefai/
           timeout: 600000
           log-level: verbose
           dangerous-clean-slate: false

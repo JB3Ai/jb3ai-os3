@@ -2,6 +2,12 @@
   RewriteEngine On
   RewriteBase /
   RewriteRule ^index\.html$ - [L]
+  
+  # Exclude static directories and files from SPA rewriting
+  RewriteRule ^(brochures|public|clipboard|kids-goexplore)(/.*)?$ - [L]
+  RewriteRule \.(pdf|png|jpg|jpeg|gif|css|js|svg|woff|woff2|ttf|eot)$ - [L]
+  
+  # Rewrite remaining requests to index.html for SPA routing
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /index.html [L]

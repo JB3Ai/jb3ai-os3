@@ -24,10 +24,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build
+      - name: Build main app
         run: npm run build
 
-      - name: Deploy dist to cPanel via FTP
+      - name: Build brochures app
+        run: cd brochures && npm ci && npm run build && cd ..
+
+      - name: Deploy main dist to cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.CPANEL_FTP_SERVER }}
@@ -46,3 +49,18 @@ jobs:
             **/.git*
             **/node_modules/**
             **/.DS_Store
+
+      - name: Deploy brochures dist to cPanel via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.CPANEL_FTP_SERVER }}
+          username: ${{ secrets.CPANEL_FTP_USERNAME }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          security: loose
+          local-dir: ./brochures/dist/
+          server-dir: ./brochures/
+          timeout: 600000
+          log-level: verbose
+          dangerous-clean-slate: false

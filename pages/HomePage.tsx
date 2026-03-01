@@ -56,6 +56,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         >
                             BOOK TECHNICAL BRIEFING
                         </motion.button>
+                        <motion.a
+                            href="/brochures/"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="border border-jb3-accent text-jb3-accent px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-jb3-accent hover:text-black transition-all"
+                        >
+                            BROWSE BROCHURES
+                        </motion.a>
                     </div>
                 </FadeIn>
             </div>

@@ -15,7 +15,7 @@ export default function SectionVisual({
   className = "",
 }: SectionVisualProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -23,35 +23,30 @@ export default function SectionVisual({
       video.defaultMuted = true;
       video.muted = true;
 
-      const handlePlaying = () => {
-        console.log("[SectionVisual] Video started playing");
-        setIsPlaying(true);
+      const handleCanPlay = () => {
+        console.log("[SectionVisual] Video can play");
+        setVideoLoaded(true);
+        // Attempt to play once loaded
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((err: any) => {
+            console.warn("[SectionVisual] Autoplay prevented:", err);
+          });
+        }
       };
 
       const handleError = (e: any) => {
         console.error("[SectionVisual] Video error:", e);
       };
 
-      video.addEventListener('playing', handlePlaying);
+      video.addEventListener('canplay', handleCanPlay);
       video.addEventListener('error', handleError);
 
-      const attemptPlay = async () => {
-        try {
-          await video.play();
-        } catch (err) {
-          console.warn("[SectionVisual] Video autoplay prevented:", err);
-          // Retry once with interaction if needed, or just leave it (fallback image will show)
-        }
-      };
-
-      if (video.readyState >= 3) {
-        attemptPlay();
-      } else {
-        video.addEventListener('canplay', attemptPlay, { once: true });
-      }
+      // Try loading immediately
+      video.load();
 
       return () => {
-        video.removeEventListener('playing', handlePlaying);
+        video.removeEventListener('canplay', handleCanPlay);
         video.removeEventListener('error', handleError);
       };
     }
@@ -77,7 +72,7 @@ export default function SectionVisual({
         {/* Video Layer */}
         {videoSrc ? (
           <div
-            className={`absolute inset-0 pointer-events-none z-10 transition-opacity duration-1000 ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute inset-0 pointer-events-none z-10 transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}
           >
             <video
               key={videoSrc}

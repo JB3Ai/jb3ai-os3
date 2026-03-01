@@ -1,37 +1,61 @@
-param(
-  [string]$Workflow = 'deploy-cpanel.yml',
-  [string]$Ref = 'main'
-)
+#!/usr/bin/env pwsh
+<#
+.SYNOPSIS
+    Deploy jb3ai-os3 to cPanel via FTP
+.DESCRIPTION
+    Builds the project and uploads to cPanel using FTP
+#>
 
-$ErrorActionPreference = 'Stop'
+param()
 
-$ghPath = 'C:\Program Files\GitHub CLI\gh.exe'
-if (!(Test-Path $ghPath)) {
-  Write-Error "GitHub CLI not found at '$ghPath'. Install with: winget install --id GitHub.cli -e --source winget"
-  exit 1
+# Colors
+$ESC = [char]27
+$Green = "$ESC[32m"
+$Red = "$ESC[31m"
+$Yellow = "$ESC[33m"
+$Reset = "$ESC[0m"
+
+Write-Host "${Green}🚀 jb3ai-os3 Deployment Script${Reset}`n"
+
+# Step 1: Check FTP credentials
+Write-Host "${Yellow}📋 Checking FTP credentials...${Reset}"
+
+if (-not $env:CPANEL_FTP_SERVER -or -not $env:CPANEL_FTP_USERNAME -or -not $env:CPANEL_FTP_PASSWORD) {
+    Write-Host "${Red}❌ FTP credentials not configured!${Reset}`n"
+    Write-Host "Set environment variables in PowerShell:"
+    Write-Host '  $env:CPANEL_FTP_SERVER="ftp.yourdomain.com"'
+    Write-Host '  $env:CPANEL_FTP_USERNAME="your-username"'
+    Write-Host '  $env:CPANEL_FTP_PASSWORD="your-password"'
+    Write-Host ""
+    Write-Host "Or edit deploy-ftp.js and replace YOUR_FTP_* values"
+    exit 1
 }
 
-function Invoke-Gh {
-  param([Parameter(ValueFromRemainingArguments = $true)][string[]]$Args)
-  & $ghPath @Args
-  return $LASTEXITCODE
-}
+Write-Host "${Green}✓ Credentials configured${Reset}`n"
 
-Invoke-Gh auth status | Out-Null
+# Step 2: Build
+Write-Host "${Yellow}🔨 Building project...${Reset}"
+npm run build
 if ($LASTEXITCODE -ne 0) {
-  Write-Output "Not authenticated with GitHub CLI."
-  Write-Output "Run: .\gh.ps1 auth login"
-  exit 1
+    Write-Host "${Red}❌ Build failed!${Reset}"
+    exit 1
 }
+Write-Host "${Green}✓ Build complete${Reset}`n"
 
-Write-Output "Dispatching workflow '$Workflow' on ref '$Ref'..."
-Invoke-Gh workflow run $Workflow --ref $Ref
+# Step 3: Deploy via FTP
+Write-Host "${Yellow}📡 Deploying to cPanel via FTP...${Reset}"
+node deploy-ftp.js
 if ($LASTEXITCODE -ne 0) {
-  Write-Error "Failed to dispatch workflow '$Workflow'."
-  exit 1
+    Write-Host "${Red}❌ Deployment failed!${Reset}"
+    Write-Host ""
+    Write-Host "${Yellow}💡 Alternative: Use FileZilla GUI${Reset}"
+    Write-Host "  1. Open FileZilla"
+    Write-Host "  2. Connect: $env:CPANEL_FTP_SERVER | $env:CPANEL_FTP_USERNAME | [password] | Port 21"
+    Write-Host "  3. Navigate to: /dadchefai/"
+    Write-Host "  4. Upload all files from: ./dist/*"
+    exit 1
 }
 
-Start-Sleep -Seconds 2
-Write-Output "Latest run status:"
-Invoke-Gh run list --workflow $Workflow --limit 1
-exit $LASTEXITCODE
+Write-Host ""
+Write-Host "${Green}✨ Deployment successful!${Reset}"
+Write-Host "${Green}🌐 Check your site at: https://yourdomain.com/dadchefai/${Reset}"

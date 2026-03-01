@@ -33,10 +33,13 @@ jobs:
           server: ${{ secrets.CPANEL_FTP_SERVER }}
           username: ${{ secrets.CPANEL_FTP_USERNAME }}
           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-          protocol: ftp
+          protocol: ftps
           port: 21
           local-dir: ./dist/
           server-dir: ./dadchefai/
+          timeout: 600000
+          log-level: verbose
+          dangerous-clean-slate: false
           exclude: |
             **/.git*/**
             **/.git*

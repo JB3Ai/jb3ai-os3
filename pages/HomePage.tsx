@@ -16,57 +16,49 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return (
         <div className="w-full">
-            {/* Hero Section with proper layering */}
-            <section className="os3-hero relative min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden">
-                <div className="hero-bg absolute inset-0 z-0 pointer-events-none">
-                    {/* Background Visual Layer */}
-                    <img
-                        src="/media/hero/os3-core-static-v2.webp"
-                        className="cube-static absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
-                        alt="System Backdrop"
-                    />
-
-                    {/* Dark Overlay Layer */}
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.4)_0%,_rgba(5,5,5,1)_70%)] z-[5] pointer-events-none" />
-                </div>
-
-                <div className="hero-fg hero-content relative z-10 pointer-events-auto">
-                    <FadeIn className="space-y-12" duration={0.8}>
-                        <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
-                            <Zap className="w-4 h-4 text-cyan-400" /> OS³ Stable v2.0
-                        </div>
-                        <motion.h1
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                            className="hero-title text-jb3-light text-4xl md:text-5xl font-bold tracking-tighter uppercase leading-[0.9] max-w-4xl mx-auto drop-shadow-2xl"
+            {/* Hero Section with animated cube */}
+            <SectionVisual
+                videoSrc="/media/hero/os3-hero-motion-v1.webm"
+                imageSrc="/media/hero/os3-core-static-v2.webp"
+                label="OS³ SYSTEM CORE INTEGRITY v2.0"
+                className="os3-hero min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden"
+            />
+            <div className="hero-fg hero-content relative z-10 pointer-events-auto -mt-[60vh] flex flex-col items-center w-full">
+                <FadeIn className="space-y-12" duration={0.8}>
+                    <div className="inline-flex items-center gap-3 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mb-4">
+                        <Zap className="w-4 h-4 text-cyan-400" /> OS³ Stable v2.0
+                    </div>
+                    <motion.h1
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                        className="hero-title text-jb3-light text-4xl md:text-5xl font-bold tracking-tighter uppercase leading-[0.9] max-w-4xl mx-auto drop-shadow-2xl"
+                    >
+                        INTELLIGENCE <br /> MANAGED.
+                    </motion.h1>
+                    <p className="hero-subtitle text-jb3-coolgray text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed drop-shadow-lg mt-4">
+                        The central operating layer for professional teams requiring high-fidelity intelligence, security, and asset production.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-6 items-center pt-12">
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => onNavigate(AppModule.WORKSPACE)}
+                            className="btn-primary px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors"
                         >
-                            INTELLIGENCE <br /> MANAGED.
-                        </motion.h1>
-                        <p className="hero-subtitle text-jb3-coolgray text-base md:text-lg max-w-2xl mx-auto font-light leading-relaxed drop-shadow-lg mt-4">
-                            The central operating layer for professional teams requiring high-fidelity intelligence, security, and asset production.
-                        </p>
-                        <div className="flex flex-wrap justify-center gap-6 items-center pt-12">
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => onNavigate(AppModule.WORKSPACE)}
-                                className="btn-primary px-8 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors"
-                            >
-                                INITIALIZE LIVE DEMO
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={() => onNavigate(AppModule.CONTACT)}
-                                className="border border-jb3-light text-jb3-light px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-jb3-divider transition-all"
-                            >
-                                BOOK TECHNICAL BRIEFING
-                            </motion.button>
-                        </div>
-                    </FadeIn>
-                </div>
-            </section>
+                            INITIALIZE LIVE DEMO
+                        </motion.button>
+                        <motion.button
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => onNavigate(AppModule.CONTACT)}
+                            className="border border-jb3-light text-jb3-light px-8 py-3 text-[10px] font-bold uppercase tracking-widest hover:bg-jb3-divider transition-all"
+                        >
+                            BOOK TECHNICAL BRIEFING
+                        </motion.button>
+                    </div>
+                </FadeIn>
+            </div>
 
             <Divider />
 

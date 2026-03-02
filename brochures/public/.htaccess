@@ -2,6 +2,10 @@
   RewriteEngine On
   RewriteBase /brochures/
 
+  DirectoryIndex index.html
+
+  RewriteRule ^$ /brochures/index.html [L]
+
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule . /brochures/index.html [L]

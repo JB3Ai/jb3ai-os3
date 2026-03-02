@@ -12,6 +12,7 @@ export enum AppModule {
   ACCELERATOR = 'ACCELERATOR',
   CONTACT = 'CONTACT',
   BROCHURES = 'BROCHURES',
+  VIDEO_VAULT = 'VIDEO_VAULT',
 
   // Functional Workspace (OS³ Dash)
   WORKSPACE = 'WORKSPACE',

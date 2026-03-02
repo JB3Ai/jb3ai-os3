@@ -21,6 +21,7 @@ const AdvisoryPage = React.lazy(() => import('./pages/AdvisoryPage').then(m => (
 const DemoWorkspacePage = React.lazy(() => import('./pages/DemoWorkspacePage').then(m => ({ default: m.DemoWorkspacePage })));
 const PolicyPage = React.lazy(() => import('./pages/PolicyPage').then(m => ({ default: m.PolicyPage })));
 const BrochuresPage = React.lazy(() => import('./pages/BrochuresPage').then(m => ({ default: m.BrochuresPage })));
+const VideoVaultPage = React.lazy(() => import('./pages/VideoVaultPage').then(m => ({ default: m.VideoVaultPage })));
 
 const LoadingFallback = () => (
   <div className="w-full h-screen bg-black flex items-center justify-center">
@@ -179,6 +180,7 @@ const App: React.FC = () => {
       case AppModule.CONSULTING: return <AdvisoryPage onNavigate={navigate} />;
 
       case AppModule.BROCHURES: return <BrochuresPage onNavigate={navigate} />;
+      case AppModule.VIDEO_VAULT: return <VideoVaultPage onNavigate={navigate} />;
       case AppModule.INVESTIGATOR_AI:
       case AppModule.SHIELD_AI:
       case AppModule.MINDCARE_AI:

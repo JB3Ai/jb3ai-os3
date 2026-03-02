@@ -82,10 +82,16 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
                 Products
               </button>
               <button
-                onClick={() => navigate(AppModule.WORKSPACE)}
-                className={`px-[10px] py-[12px] hover:text-white/95 hover:drop-shadow-[0_0_12px_rgba(102,255,102,0.18)] transition-all uppercase ${activeModule === AppModule.WORKSPACE ? 'text-white/95 drop-shadow-[0_0_12px_rgba(102,255,102,0.18)]' : ''}`}
+                onClick={() => navigate(AppModule.BROCHURES)}
+                className={`px-[10px] py-[12px] hover:text-white/95 hover:drop-shadow-[0_0_12px_rgba(102,255,102,0.18)] transition-all uppercase ${activeModule === AppModule.BROCHURES ? 'text-white/95 drop-shadow-[0_0_12px_rgba(102,255,102,0.18)]' : ''}`}
               >
-                Demo
+                Library
+              </button>
+              <button
+                onClick={() => navigate(AppModule.VIDEO_VAULT)}
+                className={`px-[10px] py-[12px] hover:text-white/95 hover:drop-shadow-[0_0_12px_rgba(102,255,102,0.18)] transition-all uppercase ${activeModule === AppModule.VIDEO_VAULT ? 'text-white/95 drop-shadow-[0_0_12px_rgba(102,255,102,0.18)]' : ''}`}
+              >
+                VVault
               </button>
               <button
                 onClick={() => navigate(AppModule.CONSULTING)}
@@ -145,7 +151,8 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
                 { id: AppModule.HOME, label: "Home" },
                 { id: AppModule.OS3_INFO, label: "OS³ Dash" },
                 { id: AppModule.APPS_LIST, label: "Products" },
-                { id: AppModule.WORKSPACE, label: "Demo" },
+                { id: AppModule.BROCHURES, label: "Library" },
+                { id: AppModule.VIDEO_VAULT, label: "VVault" },
                 { id: AppModule.CONSULTING, label: "Advisory" },
                 { id: AppModule.CONTACT, label: "Contact" }
               ].map((m, idx) => (

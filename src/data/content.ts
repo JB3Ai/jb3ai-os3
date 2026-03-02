@@ -53,9 +53,14 @@ export const PAGE_METADATA: Record<AppModule, { title: string; description: stri
     path: "contact"
   },
   [AppModule.BROCHURES]: {
-    title: "Brochures | JB³Ai",
+    title: "Library | JB³Ai",
     description: "Access detailed product brochures and technical documentation.",
     path: "brochures"
+  },
+  [AppModule.VIDEO_VAULT]: {
+    title: "VVault | JB³Ai",
+    description: "Video vault with product demos, instructional content, and project showcases.",
+    path: "vvault"
   },
   [AppModule.WORKSPACE]: {
     title: "OS³ Dash Demo | JB³Ai",

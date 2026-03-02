@@ -6,8 +6,9 @@
   RewriteCond %{HTTP_HOST} ^www\.jb3ai\.com$ [NC]
   RewriteRule ^ https://jb3ai.com%{REQUEST_URI} [R=301,L]
 
-  RewriteRule ^brochure/?$ /brochures/ [R=301,L,NC]
-  RewriteRule ^brochures$ /brochures/ [R=301,L,NC]
+  RewriteRule ^brochure/?$ /brochures [R=301,L,NC]
+  RewriteRule ^brochures/?$ /index.html [L]
+  RewriteRule ^brochures/.+ /index.html [L]
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d

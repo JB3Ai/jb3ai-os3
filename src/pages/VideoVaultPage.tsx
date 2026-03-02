@@ -62,6 +62,79 @@ const VIDEOS: VaultVideo[] = [
   { id: 'brf-003', ref: 'BRF-003', title: 'AI Governance — Masterclass', description: 'In-depth learning on compliance architecture, ethical deployment, and risk management within OS³.', category: 'b', source: 'local', url: '/media/vault/governance-masterclass.mp4', duration: '15:02' },
 ];
 
+/* ─────────────────── CURSOR EFFECTS HOOK ─────────────────── */
+function useCursorEffects() {
+  const spotlightRef = useRef<HTMLDivElement>(null);
+  const orbRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  const mouse = useRef({ x: -9999, y: -9999, tx: -9999, ty: -9999 });
+  const orb = useRef({ x: -9999, y: -9999 });
+  const ring = useRef({ x: -9999, y: -9999 });
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      mouse.current.tx = e.clientX;
+      mouse.current.ty = e.clientY;
+      if (spotlightRef.current) spotlightRef.current.style.opacity = '1';
+      if (orbRef.current) orbRef.current.style.opacity = '1';
+      if (ringRef.current) ringRef.current.style.opacity = '1';
+    };
+    window.addEventListener('mousemove', onMove);
+
+    let raf: number;
+    const animate = () => {
+      const { tx, ty } = mouse.current;
+      // Orb — tight follow
+      orb.current.x += (tx - orb.current.x) * 0.18;
+      orb.current.y += (ty - orb.current.y) * 0.18;
+      // Ring — lazy follow
+      ring.current.x += (tx - ring.current.x) * 0.09;
+      ring.current.y += (ty - ring.current.y) * 0.09;
+
+      if (orbRef.current) {
+        orbRef.current.style.left = `${orb.current.x}px`;
+        orbRef.current.style.top = `${orb.current.y}px`;
+      }
+      if (ringRef.current) {
+        ringRef.current.style.left = `${ring.current.x}px`;
+        ringRef.current.style.top = `${ring.current.y}px`;
+      }
+      if (spotlightRef.current) {
+        spotlightRef.current.style.background = `radial-gradient(700px circle at ${tx}px ${ty}px, rgba(57,255,136,0.07) 0%, rgba(139,92,255,0.05) 35%, transparent 70%)`;
+      }
+      raf = requestAnimationFrame(animate);
+    };
+    raf = requestAnimationFrame(animate);
+
+    return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf); };
+  }, []);
+
+  const expandRing = useCallback(() => {
+    if (ringRef.current) {
+      ringRef.current.style.width = '52px';
+      ringRef.current.style.height = '52px';
+      ringRef.current.style.borderColor = 'rgba(57,255,136,0.5)';
+    }
+  }, []);
+  const shrinkRing = useCallback(() => {
+    if (ringRef.current) {
+      ringRef.current.style.width = '40px';
+      ringRef.current.style.height = '40px';
+      ringRef.current.style.borderColor = 'rgba(57,255,136,0.3)';
+    }
+  }, []);
+  const expandOrbForCard = useCallback(() => {
+    if (orbRef.current) { orbRef.current.style.width = '20px'; orbRef.current.style.height = '20px'; }
+    if (ringRef.current) { ringRef.current.style.width = '60px'; ringRef.current.style.height = '60px'; ringRef.current.style.borderColor = 'rgba(139,92,255,0.45)'; }
+  }, []);
+  const resetOrbForCard = useCallback(() => {
+    if (orbRef.current) { orbRef.current.style.width = '12px'; orbRef.current.style.height = '12px'; }
+    if (ringRef.current) { ringRef.current.style.width = '40px'; ringRef.current.style.height = '40px'; ringRef.current.style.borderColor = 'rgba(57,255,136,0.3)'; }
+  }, []);
+
+  return { spotlightRef, orbRef, ringRef, expandRing, shrinkRing, expandOrbForCard, resetOrbForCard };
+}
+
 /* ─────────────────── HERO CANVAS ─────────────────── */
 const HeroCanvas: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -147,8 +220,11 @@ const VaultCard: React.FC<{
   index: number;
   isPlaying: boolean;
   onPlay: () => void;
-}> = ({ video, index, isPlaying, onPlay }) => {
+  onCardEnter: () => void;
+  onCardLeave: () => void;
+}> = ({ video, index, isPlaying, onPlay, onCardEnter, onCardLeave }) => {
   const meta = CATEGORY_META[video.category];
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const isYouTube = (url: string) => url.includes('youtube.com') || url.includes('youtu.be');
   const getYouTubeEmbedUrl = (url: string) => {
@@ -156,13 +232,41 @@ const VaultCard: React.FC<{
     return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0` : url;
   };
 
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const dx = (e.clientX - cx) / (r.width / 2);
+    const dy = (e.clientY - cy) / (r.height / 2);
+    const lx = ((e.clientX - r.left) / r.width) * 100;
+    const ly = ((e.clientY - r.top) / r.height) * 100;
+    el.style.transform = `translateY(-4px) perspective(900px) rotateX(${dy * -5}deg) rotateY(${dx * 5}deg)`;
+    el.style.boxShadow = '0 20px 50px rgba(57,255,136,0.12), 0 0 0 1px rgba(57,255,136,0.22), inset 0 0 60px rgba(57,255,136,0.03)';
+    el.style.background = `radial-gradient(circle at ${lx}% ${ly}%, rgba(57,255,136,0.05) 0%, rgba(139,92,255,0.03) 30%, transparent 60%), #0d1120`;
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    const el = cardRef.current;
+    if (!el) return;
+    el.style.transform = 'translateY(0) perspective(900px) rotateX(0) rotateY(0)';
+    el.style.boxShadow = '';
+    el.style.background = '';
+    onCardLeave();
+  }, [onCardLeave]);
+
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: index * 0.05, ease: 'easeOut' }}
       onClick={onPlay}
-      className="group relative cursor-pointer rounded-[20px] overflow-hidden border border-white/[.07] bg-[#0d1120] backdrop-blur-sm transition-all duration-300 hover:border-[#39FF88]/30 hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(57,255,136,.08),0_0_0_1px_rgba(57,255,136,.12)]"
+      onMouseMove={handleMouseMove}
+      onMouseEnter={onCardEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ willChange: 'transform', transition: 'border-color .25s, box-shadow .25s, transform .15s' }}
+      className="group relative cursor-pointer rounded-[20px] overflow-hidden border border-white/[.07] bg-[#0d1120] backdrop-blur-sm"
     >
       {/* Glass sheen */}
       <div className="absolute inset-0 rounded-[20px] bg-gradient-to-br from-white/[.04] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-[1]" />
@@ -241,6 +345,7 @@ const VaultCard: React.FC<{
 export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = ({ onNavigate }) => {
   const [activeCat, setActiveCat] = useState<string>('all');
   const [playingId, setPlayingId] = useState<string | null>(null);
+  const { spotlightRef, orbRef, ringRef, expandRing, shrinkRing, expandOrbForCard, resetOrbForCard } = useCursorEffects();
 
   const filtered = activeCat === 'all' ? VIDEOS : VIDEOS.filter(v => v.category === activeCat);
 
@@ -253,7 +358,38 @@ export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = 
   };
 
   return (
-    <div className="relative bg-[#050609] min-h-screen">
+    <div className="relative bg-[#050609] min-h-screen cursor-none">
+
+      {/* Film grain overlay */}
+      <div
+        className="fixed inset-0 pointer-events-none z-[9998] opacity-40"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")` }}
+      />
+
+      {/* Spotlight overlay */}
+      <div ref={spotlightRef} className="fixed inset-0 pointer-events-none z-[9997] opacity-0 transition-opacity duration-400" />
+
+      {/* Cursor orb (tight follow) */}
+      <div
+        ref={orbRef}
+        className="fixed pointer-events-none z-[99999] opacity-0 transition-[width,height,opacity] duration-200"
+        style={{
+          width: 12, height: 12, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(57,255,136,0.9) 0%, rgba(139,92,255,0.4) 60%, transparent 100%)',
+          transform: 'translate(-50%, -50%)', mixBlendMode: 'screen',
+        }}
+      />
+
+      {/* Cursor ring (lazy follow) */}
+      <div
+        ref={ringRef}
+        className="fixed pointer-events-none z-[99998] opacity-0 transition-[width,height,opacity,border-color] duration-150"
+        style={{
+          width: 40, height: 40, borderRadius: '50%',
+          border: '1px solid rgba(57,255,136,0.3)',
+          transform: 'translate(-50%, -50%)',
+        }}
+      />
 
       {/* ── HERO ── */}
       <section className="relative h-[100vh] flex flex-col items-center justify-center text-center overflow-hidden">
@@ -286,7 +422,17 @@ export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = 
               <span className="bg-gradient-to-br from-[#39FF88] to-[#8B5CFF] bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(57,255,136,.4)]">VV</span>
               AULT
             </span>
+            {/* Glitch overlay */}
+            <span className="absolute inset-0 text-[#00D9FF] opacity-0 animate-[hGlitch_8s_infinite] pointer-events-none" aria-hidden="true">
+              <span className="text-transparent bg-gradient-to-br from-[#39FF88] to-[#8B5CFF] bg-clip-text">VV</span>
+              AULT
+            </span>
           </h1>
+
+          {/* Sub-title word */}
+          <p className="font-['Orbitron',monospace] text-[clamp(18px,3vw,32px)] font-bold tracking-[.35em] uppercase text-white/18 mt-2">
+            VIDEO
+          </p>
 
           {/* Neural line */}
           <div className="w-20 h-0.5 mx-auto mt-6 bg-gradient-to-r from-[#39FF88] to-[#8B5CFF] rounded-full shadow-[0_0_12px_rgba(57,255,136,.4)]" />
@@ -333,6 +479,8 @@ export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = 
               <button
                 key={tab.key}
                 onClick={() => { setActiveCat(tab.key); setPlayingId(null); }}
+                onMouseEnter={expandRing}
+                onMouseLeave={shrinkRing}
                 className={`font-['Orbitron',monospace] text-[9px] font-bold tracking-[.18em] uppercase px-6 py-2.5 rounded-full border backdrop-blur-sm transition-all duration-250 ${
                   activeCat === tab.key
                     ? 'bg-gradient-to-br from-[#39FF88] to-[#8B5CFF] border-transparent text-black'
@@ -361,6 +509,8 @@ export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = 
                   index={i}
                   isPlaying={playingId === video.id}
                   onPlay={() => setPlayingId(playingId === video.id ? null : video.id)}
+                  onCardEnter={expandOrbForCard}
+                  onCardLeave={resetOrbForCard}
                 />
               ))}
             </motion.div>
@@ -394,6 +544,13 @@ export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = 
         @keyframes blobDrift {
           0% { transform: translate(0, 0); }
           100% { transform: translate(30px, 20px); }
+        }
+        @keyframes hGlitch {
+          0%,92%,100% { opacity:0; transform:none; clip-path:none; }
+          93% { opacity:0.6; transform:translate(-3px,0) skewX(-2deg); clip-path:inset(15% 0 60% 0); }
+          94% { opacity:0; }
+          95% { opacity:0.4; transform:translate(3px,0); clip-path:inset(65% 0 5% 0); }
+          96% { opacity:0; }
         }
       `}</style>
     </div>

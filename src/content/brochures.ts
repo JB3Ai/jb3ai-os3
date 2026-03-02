@@ -1,10 +1,10 @@
 export const BROCHURES = {
-    os3dash: "/documents/pdfs/jb3os3-dash-operating-system.pdf",
-    mindcare: "/documents/pdfs/jb3mindcareai.pdf",
-    shield: "/documents/pdfs/jb3shieldai.pdf",
-    investigator: "/documents/pdfs/jb3investigatorai-dash.pdf",
-    consulting: "/documents/pdfs/jb3consulting-accelerator.pdf",
-    investment: "/documents/pdfs/jb3ai-investment-deck.pdf",
+    os3dash: "/documents/pdfs/jb3ai-dash-the-operating-system.pdf",
+    mindcare: "/documents/pdfs/jb3ai-mindcareai-personal-support-and-growth.pdf",
+    shield: "/documents/pdfs/jb3ai-shieldai-silent-protection.pdf",
+    investigator: "/documents/pdfs/jb3ai-investigatorai-app-dash-v1.pdf",
+    consulting: "/documents/pdfs/jb3ai-consulting-and-accelerator.pdf",
+    investment: "/documents/pdfs/jb3ai-investment-deck-intelligence-in-motion.pdf",
     voicegrid: "/documents/pdfs/jb3ai-os3-voice-grid.pdf",
 } as const;
 

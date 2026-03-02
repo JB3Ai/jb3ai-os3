@@ -1,5 +1,4 @@
 jb3ai-os3/
-(Excluded directories: .git, node_modules, dist)
 ├── .github/
 │   └── workflows/
 │       └── deploy-cpanel.yml
@@ -10,6 +9,10 @@ jb3ai-os3/
 ├── brochures/
 │   ├── components/
 │   │   └── InteractiveBackground.tsx
+│   ├── dist/
+│   │   ├── assets/
+│   │   │   └── index-B_dKXB33.js
+│   │   └── index.html
 │   ├── public/
 │   │   └── .htaccess
 │   ├── services/
@@ -71,6 +74,82 @@ jb3ai-os3/
 │   └── content.ts
 ├── demo/
 │   └── demo.tsx
+├── dist/
+│   ├── assets/
+│   │   ├── AdvisoryPage-Bxz4C-YK.js
+│   │   ├── AppsListPage-BNPyyBpA.js
+│   │   ├── arrow-right-BVPb_4KE.js
+│   │   ├── audioUtils-JgrGC4F7.js
+│   │   ├── BrochuresPage-CCQsmjyr.js
+│   │   ├── ClientZone-D1b4Fhrx.js
+│   │   ├── ContactPage-5VCBtVzC.js
+│   │   ├── DashboardBackdrop-CK_xSeWm.js
+│   │   ├── DemoWorkspacePage-P6fa33lj.js
+│   │   ├── download-D3tr24OD.js
+│   │   ├── gemini-DczHGe7b.js
+│   │   ├── GenericDetailPage-DTbl8bgp.js
+│   │   ├── index-3UqZOsL6.js
+│   │   ├── index-D7pZeM8y.css
+│   │   ├── lock-De29PGWO.js
+│   │   ├── MediaLab-BR9qDVmq.js
+│   │   ├── MotionLab-C9L1fOms.js
+│   │   ├── NeuralCore-DKmPXv3q.js
+│   │   ├── OS3DashInfoPage-Deei9s-R.js
+│   │   ├── PolicyPage-DTJn0mCA.js
+│   │   ├── SectionHeader-pdwZWE0C.js
+│   │   ├── ServicesHubPage-XvPxJE5Y.js
+│   │   └── terminal-DOcji45X.js
+│   ├── brochures/
+│   │   ├── JB3Ai_InvestigatorAi.pdf
+│   │   ├── JB3Ai_Investment_Deck.pdf
+│   │   ├── JB3Ai_OS3_Dash.pdf
+│   │   ├── jb3ai-consulting-and-accelerator.pdf
+│   │   ├── jb3ai-dash-the-operating-system.pdf
+│   │   ├── jb3ai-intelligence-info-ai.pdf
+│   │   ├── jb3ai-investigatorai-app-dash-v1.pdf
+│   │   ├── jb3ai-investment-deck-intelligence-in-motion.pdf
+│   │   ├── jb3ai-investment-deck.pdf
+│   │   ├── jb3ai-mindcareai-personal-support-and-growth.pdf
+│   │   ├── jb3ai-os3-dash-the-operating-system.pdf
+│   │   ├── jb3ai-shieldai-silent-protection.pdf
+│   │   ├── jb3consulting-accelerator.pdf
+│   │   ├── jb3investigatorai-dash.pdf
+│   │   ├── jb3mindcareai.pdf
+│   │   ├── jb3os3-dash-operating-system.pdf
+│   │   └── jb3shieldai.pdf
+│   ├── documents/
+│   │   └── pdfs/
+│   │       ├── jb3ai-consulting-and-accelerator.pdf
+│   │       ├── jb3ai-dash-the-operating-system.pdf
+│   │       ├── jb3ai-executive-deck-os.pdf
+│   │       ├── jb3ai-intelligence-info-ai.pdf
+│   │       ├── jb3ai-intelligence-managed.pdf
+│   │       ├── jb3ai-investigatorai-app-dash-v1.pdf
+│   │       ├── jb3ai-investment-deck-intelligence-in-motion.pdf
+│   │       ├── jb3ai-mindcareai-personal-support-and-growth.pdf
+│   │       ├── jb3ai-os3-voice-grid.pdf
+│   │       └── jb3ai-shieldai-silent-protection.pdf
+│   ├── media/
+│   │   ├── dividers/
+│   │   │   ├── .htaccess
+│   │   │   ├── section-divider-dark-v1.jpg
+│   │   │   └── section-divider-dark-v2.jpg
+│   │   ├── hero/
+│   │   │   ├── dashboard-backdrop-v1.jpg
+│   │   │   ├── os3-core-static-v2.webp
+│   │   │   ├── os3-hero-motion-v1.mp4
+│   │   │   ├── os3-hero-motion-v1.webm
+│   │   │   └── os3-hero-still-v1.jpg
+│   │   ├── ui/
+│   │   │   ├── favicon.svg
+│   │   │   ├── jb3ai-mark copy.svg
+│   │   │   ├── jb3ai-mark.svg
+│   │   │   ├── os3-logo copy.svg
+│   │   │   └── os3-logo.svg
+│   │   └── jonoAstro.jpg
+│   ├── .htaccess
+│   ├── favicon.svg
+│   └── index.html
 ├── jono/
 ├── layouts/
 │   ├── DemoLayout.tsx
@@ -232,6 +311,7 @@ jb3ai-os3/
 ├── deploy-ftp.js
 ├── deploy.ps1
 ├── favicon.svg
+├── file-tree.full.txt
 ├── file-tree.txt
 ├── gh.ps1
 ├── gitlog.txt

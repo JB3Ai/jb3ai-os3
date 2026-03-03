@@ -49,11 +49,11 @@ const TABS: { key: string; label: string; count: number }[] = [
 // ──────────────────────────────────────────────────────────────
 const VIDEOS: VaultVideo[] = [
   // TRANSMISSIONS
-  { id: 'trn-001', ref: 'TRN-001', title: 'OS³ Platform — 60s Broadcast', description: 'High-impact social cut introducing the OS³ governed intelligence kernel to enterprise decision-makers.', category: 's', source: 'local', url: '/media/vault/os3-broadcast.mp4', duration: '0:58' },
-  { id: 'trn-002', ref: 'TRN-002', title: 'ShieldAi — Threat Reel', description: 'Rapid-cut social asset showcasing proactive threat neutralization across enterprise infrastructure layers.', category: 's', source: 'local', url: '/media/vault/shield-threat-reel.mp4', duration: '0:32' },
-  { id: 'trn-003', ref: 'TRN-003', title: 'InvestigatorAi — Signal Cut', description: "Social-first visual profile of JB³Ai's forensic intelligence platform built for high-stakes investigations.", category: 's', source: 'local', url: '/media/vault/investigator-signal.mp4', duration: '1:05' },
+  { id: 'trn-001', ref: 'TRN-001', title: 'OS³ Platform — 60s Broadcast', description: 'High-impact social cut introducing the OS³ governed intelligence kernel to enterprise decision-makers.', category: 's', source: 'youtube', url: 'https://youtu.be/tEnyEt0iiSY', duration: '0:58' },
+  { id: 'trn-002', ref: 'TRN-002', title: 'ShieldAi — Threat Reel', description: 'Rapid-cut social asset showcasing proactive threat neutralization across enterprise infrastructure layers.', category: 's', source: 'youtube', url: 'https://youtu.be/n3i-k--ALiU', duration: '0:32' },
+  { id: 'trn-003', ref: 'TRN-003', title: 'InvestigatorAi — Signal Cut', description: "Social-first visual profile of JB³Ai's forensic intelligence platform built for high-stakes investigations.", category: 's', source: 'youtube', url: 'https://youtu.be/LQXoyAzxNJ0', duration: '1:05' },
   // DEPLOYMENTS
-  { id: 'dep-001', ref: 'DEP-001', title: 'OS³ Dash — Full Walkthrough', description: 'Complete product demonstration of the modular AI operating system. Real-time operational efficiency at enterprise scale.', category: 'd', source: 'local', url: '/media/vault/os3-dash-overview.mp4', duration: '4:22' },
+  { id: 'dep-001', ref: 'DEP-001', title: 'OS³ Dash — Full Walkthrough', description: 'Complete product demonstration of the modular AI operating system. Real-time operational efficiency at enterprise scale.', category: 'd', source: 'youtube', url: 'https://youtu.be/luTYqcmwWL0', duration: '4:22' },
   { id: 'dep-002', ref: 'DEP-002', title: 'OS³ Voice Grid — Live Demo', description: 'Ultra-low latency voice architecture in action. NLP deployed at the edge in real-time.', category: 'd', source: 'local', url: '/media/vault/voice-grid-demo.mp4', duration: '3:48' },
   { id: 'dep-003', ref: 'DEP-003', title: 'MindCareAi — Platform Overview', description: 'Adaptive neural network framework for personal growth and emotional intelligence, demonstrated live.', category: 'd', source: 'local', url: '/media/vault/mindcare-overview.mp4', duration: '5:10' },
   // BRIEFINGS

@@ -63,6 +63,8 @@ const VIDEOS: VaultVideo[] = [
   // EXTENDED
   { id: 'ext-001', ref: 'EXT-001', title: 'JB³Ai — Extended Briefing I', description: 'Extended intelligence briefing covering advanced OS³ capabilities and enterprise deployment scenarios.', category: 'b', source: 'youtube', url: 'https://youtu.be/qlcn6eoWUf8', duration: '10:00' },
   { id: 'ext-002', ref: 'EXT-002', title: 'JB³Ai — Extended Briefing II', description: 'Continuation briefing on governed AI integration, operational architecture, and real-world deployment impact.', category: 'b', source: 'youtube', url: 'https://youtu.be/-A-Jecn_snw', duration: '10:00' },
+  { id: 'ext-003', ref: 'EXT-003', title: 'JB³Ai — Extended Briefing III', description: 'Strategic overview of JB³Ai intelligence operations and platform evolution across enterprise verticals.', category: 'b', source: 'youtube', url: 'https://youtu.be/ZhoKerlOmsM', duration: '10:00' },
+  { id: 'ext-004', ref: 'EXT-004', title: 'JB³Ai — Extended Briefing IV', description: 'Advanced briefing on next-generation AI deployment frameworks and enterprise integration pathways.', category: 'b', source: 'youtube', url: 'https://youtu.be/OB4EOujdvws', duration: '10:00' },
 ];
 
 /* ─────────────────── CURSOR EFFECTS HOOK ─────────────────── */

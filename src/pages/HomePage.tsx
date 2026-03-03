@@ -60,7 +60,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {/* Background Visual Layer */}
                     {!shouldAnimate ? (
                         <img
-                            src="/media/hero/os3-core-static-v2.webp"
+                            src="/media/hero/os3-hero-still-v1.jpg"
                             className="cube-static absolute inset-0 w-full h-full object-cover opacity-60 grayscale"
                             alt="System Backdrop"
                         />
@@ -75,8 +75,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                             poster="/media/hero/os3-hero-still-v1.jpg"
                             className="absolute inset-0 w-full h-full object-cover opacity-60"
                         >
-                            <source src="/media/hero/os3-hero-motion-v1.mp4" type="video/mp4" />
-                            <source src="/media/hero/os3-hero-motion-v1.webm" type="video/webm" />
+                            <source src="/media/hero/hero_2_new.webm" type="video/webm" />
+                            <source src="/media/hero/her_2_new.mp4" type="video/mp4" />
                         </video>
                     )}
 
@@ -139,7 +139,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 <FadeIn>
                     <SectionVisual
                         videoSrc="/media/sections/os3-core-loop-v1.mp4"
-                        imageSrc="/media/hero/os3-core-static-v2.webp"
+                        imageSrc="/media/hero/os3-hero-still-v1.jpg"
                         label="OS³ SYSTEM CORE INTEGRITY v2.0"
                     />
                 </FadeIn>

@@ -38,10 +38,10 @@ const CATEGORY_META: Record<VaultCategory, { label: string; tagClass: string; bg
 };
 
 const TABS: { key: string; label: string; count: number }[] = [
-  { key: 'all', label: 'All', count: 9 },
+  { key: 'all', label: 'All', count: 13 },
   { key: 's', label: 'Transmissions', count: 3 },
   { key: 'd', label: 'Deployments', count: 3 },
-  { key: 'b', label: 'Briefings', count: 3 },
+  { key: 'b', label: 'Briefings', count: 7 },
 ];
 
 // ──────────────────────────────────────────────────────────────
@@ -232,9 +232,17 @@ const VaultCard: React.FC<{
   const cardRef = useRef<HTMLDivElement>(null);
 
   const isYouTube = (url: string) => url.includes('youtube.com') || url.includes('youtu.be');
-  const getYouTubeEmbedUrl = (url: string) => {
+  const getYouTubeId = (url: string) => {
     const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/);
-    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0&playsinline=1` : url;
+    return match ? match[1] : null;
+  };
+  const getYouTubeEmbedUrl = (url: string) => {
+    const id = getYouTubeId(url);
+    return id ? `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&playsinline=1` : url;
+  };
+  const getYouTubeThumbnail = (url: string) => {
+    const id = getYouTubeId(url);
+    return id ? `https://img.youtube.com/vi/${id}/hqdefault.jpg` : null;
   };
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -295,7 +303,18 @@ const VaultCard: React.FC<{
           )
         ) : (
           <>
-            <div className={`absolute inset-0 transition-transform duration-500 group-hover:scale-[1.06] ${meta.bgClass}`} />
+            {isYouTube(video.url) && getYouTubeThumbnail(video.url) ? (
+              <img
+                src={getYouTubeThumbnail(video.url)!}
+                alt={video.title}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.06]"
+                loading="lazy"
+              />
+            ) : (
+              <div className={`absolute inset-0 transition-transform duration-500 group-hover:scale-[1.06] ${meta.bgClass}`} />
+            )}
+            {/* Dark overlay for contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#090d18] via-[#090d18]/40 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
             {/* Grid lines */}
             <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
               style={{ backgroundImage: 'linear-gradient(rgba(57,255,136,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(57,255,136,.06) 1px, transparent 1px)', backgroundSize: '28px 28px' }} />

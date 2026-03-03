@@ -5,7 +5,7 @@ export default function Home() {
     <>
       <SectionVisual
         videoSrc="/media/sections/os3-core-loop-v1.mp4"
-        imageSrc="/media/hero/os3-core-static-v2.webp"
+        imageSrc="/media/hero/os3-hero-still-v1.jpg"
         label="OS³ SYSTEM CORE"
       />
     </>

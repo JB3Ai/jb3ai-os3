@@ -15,7 +15,7 @@ export const SectionDivider: React.FC<SectionDividerProps> = ({ height = "140px 
         className={`w-full bg-cover bg-center ${height.includes('px') ? '' : height}`}
         style={{
             backgroundColor: 'transparent',
-            backgroundImage: "url('/media/hero/os3-core-static-v2.webp')",
+            backgroundImage: "url('/media/hero/new_hero2_static.webp')",
             height: height.includes('px') ? height : undefined
         }}
     />

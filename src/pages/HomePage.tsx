@@ -60,8 +60,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {/* Background Visual Layer */}
                     {!shouldAnimate ? (
                         <img
-                            src="/media/hero/os3-hero-still-v1.jpg"
-                            className="cube-static absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 grayscale scale-[0.82] origin-center"
+                            src="/media/hero/new_hero2_static.webp"
+                            className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 grayscale scale-[0.82] origin-center"
                             alt="System Backdrop"
                         />
                     ) : (
@@ -72,7 +72,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                             loop
                             playsInline
                             preload="metadata"
-                            poster="/media/hero/os3-hero-still-v1.jpg"
+                            poster="/media/hero/new_hero2_static.webp"
                             className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 scale-[0.82] origin-center"
                         >
                             <source src="/media/hero/hero_2_new.webm" type="video/webm" />
@@ -85,6 +85,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                     {/* Dark Overlay Layer */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(25,25,25,0.2)_0%,_rgba(5,5,5,1)_80%)] z-[5] pointer-events-none" />
+                </div>
+
+                <div className="absolute inset-0 z-[7] pointer-events-none" aria-hidden="true">
+                    <img
+                        src="/media/hero/new_hero2_static.webp"
+                        alt=""
+                        loading="eager"
+                        decoding="async"
+                        className="absolute left-[56%] md:left-[58%] top-[68%] md:top-[66%] -translate-x-1/2 -translate-y-1/2 w-[78vw] sm:w-[68vw] md:w-[58vw] lg:w-[52vw] max-w-[760px] object-contain opacity-[0.15] blur-[2px] [filter:brightness(0.85)_contrast(1.05)] select-none"
+                    />
                 </div>
 
                 <div className="hero-fg hero-content relative z-10 pointer-events-auto">
@@ -138,7 +148,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="max-w-6xl mx-auto px-10">
                 <FadeIn>
                     <SectionVisual
-                        imageSrc="/media/hero/os3-hero-still-v1.jpg"
+                        imageSrc="/media/hero/new_hero2_static.webp"
                         label="OS³ SYSTEM CORE INTEGRITY v2.0"
                     />
                 </FadeIn>

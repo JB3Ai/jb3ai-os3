@@ -19,7 +19,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             {/* Hero Section with animated cube */}
             <SectionVisual
                 videoSrc="/media/hero/os3-hero-motion-v1.webm"
-                imageSrc="/media/hero/os3-core-static-v2.webp"
+                imageSrc="/media/hero/new_hero2_static.webp"
                 label="OS³ SYSTEM CORE INTEGRITY v2.0"
                 className="os3-hero min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden"
             />
@@ -73,7 +73,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
             <div className="max-w-6xl mx-auto px-10">
                 <FadeIn delay={0.2}>
                     <SectionVisual
-                        imageSrc="/media/hero/os3-core-static-v2.webp"
+                        imageSrc="/media/hero/new_hero2_static.webp"
                         label="OS³ SYSTEM CORE INTEGRITY v2.0"
                     />
                 </FadeIn>

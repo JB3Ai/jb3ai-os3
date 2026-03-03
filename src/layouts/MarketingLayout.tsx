@@ -38,7 +38,7 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
         {/* Visual Media Layer - Static Image Only for Ambient Background */}
         <div className="absolute inset-0 opacity-20">
           <img
-            src="/media/hero/os3-hero-still-v1.jpg"
+            src="/media/hero/new_hero2_static.webp"
             className="w-full h-full object-cover grayscale pointer-events-none"
             alt="System Backdrop"
           />

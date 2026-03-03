@@ -13,7 +13,7 @@ export const DashboardBackdrop: React.FC<DashboardBackdropProps> = ({ opacity = 
         transition={{ duration: 1.5 }}
         className="absolute inset-0 z-0 bg-cover bg-center pointer-events-none grayscale brightness-[0.2]"
         style={{
-            backgroundImage: "url('/media/hero/os3-core-static-v2.webp')",
+            backgroundImage: "url('/media/hero/new_hero2_static.webp')",
             mixBlendMode: 'luminosity'
         }}
     />

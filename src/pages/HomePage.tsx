@@ -61,7 +61,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     {!shouldAnimate ? (
                         <img
                             src="/media/hero/os3-hero-still-v1.jpg"
-                            className="cube-static absolute inset-0 w-full h-full object-cover opacity-60 grayscale scale-[0.82] origin-center"
+                            className="cube-static absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 grayscale scale-[0.82] origin-center"
                             alt="System Backdrop"
                         />
                     ) : (
@@ -73,7 +73,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                             playsInline
                             preload="metadata"
                             poster="/media/hero/os3-hero-still-v1.jpg"
-                            className="absolute inset-0 w-full h-full object-cover opacity-60 scale-[0.82] origin-center"
+                            className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 scale-[0.82] origin-center"
                         >
                             <source src="/media/hero/hero_2_new.webm" type="video/webm" />
                             <source src="/media/hero/her_2_new.mp4" type="video/mp4" />

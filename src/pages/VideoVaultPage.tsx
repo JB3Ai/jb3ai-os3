@@ -234,7 +234,7 @@ const VaultCard: React.FC<{
   const isYouTube = (url: string) => url.includes('youtube.com') || url.includes('youtu.be');
   const getYouTubeEmbedUrl = (url: string) => {
     const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([\w-]+)/);
-    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0` : url;
+    return match ? `https://www.youtube.com/embed/${match[1]}?autoplay=1&rel=0&playsinline=1` : url;
   };
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -267,6 +267,7 @@ const VaultCard: React.FC<{
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: index * 0.05, ease: 'easeOut' }}
       onClick={onPlay}
+      onTouchEnd={(e) => { e.preventDefault(); onPlay(); }}
       onMouseMove={handleMouseMove}
       onMouseEnter={onCardEnter}
       onMouseLeave={handleMouseLeave}
@@ -282,10 +283,12 @@ const VaultCard: React.FC<{
           isYouTube(video.url) ? (
             <iframe
               src={getYouTubeEmbedUrl(video.url)}
-              className="w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              className="w-full h-full absolute inset-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
+              playsInline
               title={video.title}
+              style={{ border: 0 }}
             />
           ) : (
             <video src={video.url} className="w-full h-full object-cover" controls autoPlay />
@@ -363,7 +366,7 @@ export const VideoVaultPage: React.FC<{ onNavigate: (m: AppModule) => void }> = 
   };
 
   return (
-    <div className="relative bg-[#050609] min-h-screen cursor-none">
+    <div className="relative bg-[#050609] min-h-screen md:cursor-none">
 
       {/* Film grain overlay */}
       <div

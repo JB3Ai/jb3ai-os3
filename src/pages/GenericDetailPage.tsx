@@ -102,7 +102,6 @@ export const GenericDetailPage: React.FC<GenericDetailPageProps> = ({ module, on
                             {(() => {
                                 let bKey: BrochureKey | undefined;
                                 if (module === AppModule.MINDCARE_AI) bKey = 'mindcare';
-                                if (module === AppModule.SHIELD_AI) bKey = 'shield';
                                 if (module === AppModule.INVESTIGATOR_AI) bKey = 'investigator';
                                 if (module === AppModule.PHONE_SYSTEM) bKey = 'voicegrid';
                                 if (module === AppModule.ACCELERATOR || module === AppModule.CONSULTING) bKey = 'consulting';

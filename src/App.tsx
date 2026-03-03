@@ -182,7 +182,6 @@ const App: React.FC = () => {
       case AppModule.BROCHURES: return <BrochuresPage onNavigate={navigate} />;
       case AppModule.VIDEO_VAULT: return <VideoVaultPage onNavigate={navigate} />;
       case AppModule.INVESTIGATOR_AI:
-      case AppModule.SHIELD_AI:
       case AppModule.MINDCARE_AI:
       case AppModule.PHONE_SYSTEM:
       case AppModule.ACCELERATOR:

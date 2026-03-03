@@ -55,13 +55,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return (
         <div className="w-full">
             {/* Hero Section with proper layering */}
-            <section className="os3-hero relative min-h-[85vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden">
+            <section className="os3-hero relative min-h-[80vh] lg:min-h-[76vh] flex flex-col items-center justify-center text-center px-10 overflow-hidden pt-8 lg:pt-0">
                 <div className="hero-bg absolute inset-0 z-0 pointer-events-none">
                     {/* Background Visual Layer */}
                     {!shouldAnimate ? (
                         <img
                             src="/media/hero/new_hero2_static.webp"
-                            className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 grayscale scale-[0.82] origin-center"
+                            className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-15 grayscale blur-[2px] scale-[0.82] origin-center"
                             alt="System Backdrop"
                         />
                     ) : (
@@ -73,7 +73,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                             playsInline
                             preload="metadata"
                             poster="/media/hero/new_hero2_static.webp"
-                            className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-60 scale-[0.82] origin-center"
+                            className="absolute inset-0 w-full h-full object-cover object-[position:50%_60%] opacity-15 blur-[2px] scale-[0.82] origin-center"
                         >
                             <source src="/media/hero/hero_2_new.webm" type="video/webm" />
                             <source src="/media/hero/her_2_new.mp4" type="video/mp4" />
@@ -93,7 +93,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                         alt=""
                         loading="eager"
                         decoding="async"
-                        className="absolute left-[56%] md:left-[58%] top-[68%] md:top-[66%] -translate-x-1/2 -translate-y-1/2 w-[78vw] sm:w-[68vw] md:w-[58vw] lg:w-[52vw] max-w-[760px] object-contain opacity-[0.15] blur-[2px] [filter:brightness(0.85)_contrast(1.05)] select-none"
+                        className="absolute left-[56%] md:left-[58%] top-[68%] md:top-[66%] -translate-x-1/2 -translate-y-1/2 w-[78vw] sm:w-[68vw] md:w-[58vw] lg:w-[52vw] max-w-[760px] object-contain opacity-10 lg:opacity-15 blur-[3px] [filter:brightness(0.85)_contrast(1.05)] select-none"
                     />
                 </div>
 
@@ -309,7 +309,6 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 bg-gray-900/40 border border-gray-900">
                         {[
                             { id: AppModule.INVESTIGATOR_AI, title: "Investigator AI", sub: "Structured Intelligence for Complex Decisions", color: "cyan", desc: "Investigator AI is designed for organisations that need to understand complex situations quickly, accurately, and defensibly. It brings together fragmented data, documents, communications, and signals into a structured intelligence environment where analysis can be trusted." },
-                            { id: AppModule.SHIELD_AI, title: "Shield AI", sub: "Active Governance & Risk Management", color: "purple", desc: "Shield AI monitors activity, enforces policy, and highlights risk before it becomes a problem. It allows organisations to deploy AI and automation with confidence, knowing that guardrails are always in place." },
                             { id: AppModule.MINDCARE_AI, title: "MindCare AI", sub: "Human-Centric Intelligence Support", color: "emerald", desc: "MindCare AI is designed to support people, not replace them. It provides structured, ethical, and human-aware assistance within the OS³ environment." }
                         ].map((prod, idx) => (
                             <motion.div
@@ -320,11 +319,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                                 transition={{ delay: idx * 0.15 }}
                                 className="bg-[#050505] p-16 space-y-8 group hover:bg-white/[0.03] transition-all"
                             >
-                                <div className="space-y-2">
-                                    <h3
-                                        onClick={() => onNavigate(prod.id)}
-                                        className={`text-white text-base md:text-lg uppercase font-bold tracking-widest cursor-pointer hover:text-${prod.color}-400 transition-colors`}
-                                    >
+                                <div className="space-y-4">
+                                    <h3 className={`text-white text-xs md:text-sm uppercase font-bold tracking-widest leading-tight hover:text-${prod.color}-400 transition-colors`}>
                                         {prod.title}
                                     </h3>
                                     <p className={`text-[10px] text-${prod.color}-400/80 uppercase tracking-[0.2em] font-bold`}>

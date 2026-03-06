@@ -1,4 +1,4 @@
-﻿
+
 import React, { useState, useEffect } from 'react';
 import { AppModule } from './types';
 import { NeuralCore } from './components/apps/NeuralCore';

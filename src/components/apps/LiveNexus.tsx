@@ -264,7 +264,7 @@ export const LiveNexus: React.FC = () => {
     const toggleMute = () => setIsMuted(!isMuted);
 
     return (
-        <div className="h-full flex flex-col p-6 gap-6 relative overflow-hidden">
+        <div className="flex flex-col h-full p-6 gap-6 relative overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between z-10">
                 <div>
@@ -325,9 +325,9 @@ export const LiveNexus: React.FC = () => {
             </div>
 
             {/* Log Output */}
-            <div className="h-32 bg-black/80 rounded border border-gray-800 p-2 font-tech text-xs text-gray-400 overflow-y-auto font-mono">
+            <div className="flex-1 overflow-y-auto min-h-0 space-y-4 p-4 bg-black/80 rounded border border-gray-800 font-tech text-xs text-gray-400 font-mono">
                 {logs.map((log: string, i: number) => (
-                    <div key={i} className="mb-1">
+                    <div key={i}>
                         <span className="text-cyan-500/50">[{new Date().toLocaleTimeString()}]</span> {log}
                     </div>
                 ))}

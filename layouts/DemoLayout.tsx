@@ -38,7 +38,7 @@ export const DemoLayout: React.FC<DemoLayoutProps> = ({ children, activeModule, 
             </button>
           </div>
           
-          <div className="flex-1 overflow-hidden h-full relative">
+          <div className="flex-1 overflow-y-auto p-4 h-full relative">
             {children}
           </div>
         </div>

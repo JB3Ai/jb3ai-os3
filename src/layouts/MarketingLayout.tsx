@@ -240,7 +240,7 @@ export const MarketingLayout: React.FC<MarketingLayoutProps> = ({
             <div className="text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
               All demonstrations use sandboxed data. Deployments are governed, auditable, and subject to NDA. No client, institutional, or sensitive data is exposed in public environments.
             </div>
-            <div className="flex items-center gap-12 text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
+            <div className="hidden md:flex items-center gap-12 text-[10px] text-gray-700 font-mono uppercase tracking-[0.2em]">
               <span>&copy; {new Date().getFullYear()} JB³Ai Corporation</span>
               <span>S-L MODES ENABLED</span>
             </div>

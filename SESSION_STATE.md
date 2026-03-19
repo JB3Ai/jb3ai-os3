@@ -7,7 +7,7 @@
 - **Stack:** React 19, Vite 7, TypeScript, Tailwind CSS 4, Framer Motion
 - **Repo:** https://github.com/JB3Ai/jb3ai-os3.git
 - **Branch:** `main`
-- **Deploy:** cPanel via GitHub Actions (`deploy-cpanel.yml`)
+- **Deploy:** Render (`https://jb3ail-qualify-ai-telephone.onrender.com`)
 
 ## Current Status: STABLE / DEPLOYED
 - Working tree is **clean** — no uncommitted changes.
@@ -32,7 +32,7 @@
 - YouTube thumbnail previews in VVault
 
 ## Next Steps / Open Items
-- None outstanding — stable and deployed.
+- None outstanding — stable and deployed on Render.
 - Consider: upgrading Tailwind v4 patterns, reviewing Azure OpenAI usage/costs.
 
 ## Known Issues

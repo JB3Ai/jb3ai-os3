@@ -16,6 +16,15 @@ interface HomePageProps {
 export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     return (
         <div className="w-full">
+            <div className="fixed top-28 right-4 max-w-[300px] px-4 py-3 rounded-md backdrop-blur-sm bg-[#1a1a00] border-2 border-yellow-500 text-yellow-500 z-[9999] shadow-[0_0_20px_rgba(234,179,8,0.3)]">
+                <p className="text-yellow-400 font-bold tracking-widest animate-pulse uppercase text-[10px]">
+                    Neural Engine Spooling Up
+                </p>
+                <p className="mt-2 text-[10px] uppercase tracking-[0.18em] text-yellow-500/90">
+                    Initializing guided demo pathways and secure system overlays.
+                </p>
+            </div>
+
             {/* Hero Section with animated cube */}
             <SectionVisual
                 videoSrc="/media/hero/os3-hero-motion-v1.webm"

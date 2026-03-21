@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Local FTP Deployment Script for cPanel
- * Deploys dist/ folder to cPanel via FTP
+ * Legacy FTP fallback for cPanel deployment.
+ * Primary production deploys for this repo are git-based via cPanel.
  */
 
 const FtpDeploy = require('ftp-deploy');
@@ -39,7 +39,7 @@ if (config.user.includes("YOUR_FTP") || config.password.includes("YOUR_FTP") || 
   process.exit(1);
 }
 
-console.log("🚀 Starting FTP deployment to cPanel...\n");
+console.log("Starting legacy FTP fallback deployment to cPanel...\n");
 console.log(`📡 Server: ${config.host}`);
 console.log(`👤 User: ${config.user}`);
 console.log(`📁 Local: ${config.localRoot}`);
@@ -60,8 +60,8 @@ ftpDeploy.on("log", (data) => {
 ftpDeploy
   .deploy(config)
   .then(() => {
-    console.log("\n✨ Deployment complete!");
-    console.log("🌐 Check your site at: https://yourdomain.com/dadchefai/");
+    console.log("\nLegacy FTP deployment complete.");
+    console.log("Verify the cPanel target path before treating this as the live production release.");
   })
   .catch((err) => {
     console.error("\n❌ Deployment failed:", err.message);

@@ -1,20 +1,40 @@
-# Deploy jb3ai-os3 from GitHub to cPanel
+# Deploy `jb3ai-os3` to cPanel via Git
 
-This repo auto-deploys to cPanel on every push to `main` using GitHub Actions.
+This project deploys to cPanel from Git, not by FTP as the primary release path.
 
-## Required GitHub Secrets
-Add these in **GitHub repo → Settings → Secrets and variables → Actions**:
+## Canonical Release Flow
 
-- `CPANEL_FTP_SERVER` (example: `ftp.jb3ai.com`)
-- `CPANEL_FTP_USERNAME` (example: `database1@jb3ai.com`)
-- `CPANEL_FTP_PASSWORD`
-- `CPANEL_TARGET_DIR` (example: `/public_html/os3/`)
+1. Commit changes locally.
+2. Push `main` to GitHub:
+   ```powershell
+   git push origin main
+   ```
+3. In cPanel, use **Git Version Control** for the linked repository.
+4. Pull or update the production checkout from GitHub `main`.
+5. Run the server-side deployment step configured for that cPanel repo, if applicable.
 
-## Workflow
-- File: `.github/workflows/deploy-cpanel.yml`
-- Trigger: push to `main` and manual dispatch
-- Process: `npm ci` → `npm run build` → upload `dist/` to `CPANEL_TARGET_DIR`
+## Source of Truth
 
-## Notes
-- Ensure `CPANEL_TARGET_DIR` points to the exact folder you want live.
-- For root site deploys, use `/public_html/` with caution.
+- Primary remote: `origin`
+- GitHub repo: `https://github.com/JB3Ai/jb3ai-os3.git`
+- Release branch: `main`
+
+## Important Notes
+
+- Treat GitHub `main` as the release source for cPanel.
+- Do not treat FTP upload as the default deployment method for this repo.
+- The local FTP files in this repository are legacy fallback tooling only.
+- The `.github/workflows/deploy-cpanel.yml` file may still exist, but it is not the source of truth for the live cPanel deployment workflow.
+
+## If cPanel Does Not Auto-Update
+
+Use cPanel to:
+
+1. Open **Git Version Control**.
+2. Select the `jb3ai-os3` repository.
+3. Pull the latest `main`.
+4. Run the repo’s configured deploy/update action inside cPanel if one is required.
+
+## Legacy Fallback
+
+If Git-based deployment is unavailable, see `DEPLOY_LOCAL_FTP.md` for the old manual FTP path. That path is retained for emergencies only.

@@ -1,81 +1,39 @@
-# Local FTP Deployment for jb3ai-os3
+# Legacy FTP Deployment for `jb3ai-os3`
 
-Deploy directly to cPanel using FTP from your local machine.
+This document is kept only as a fallback reference.
 
-## Quick Start
+The primary production workflow for this repo is:
 
-### 1. Set FTP Credentials
+1. Push `main` to GitHub
+2. Let cPanel pull/deploy from Git
 
-**Option A: Environment Variables (Recommended)**
+Do not use FTP unless the normal cPanel git deployment path is unavailable.
+
+## When To Use This
+
+- cPanel Git Version Control is unavailable
+- the linked repo cannot pull from GitHub
+- you need an emergency file upload fallback
+
+## Legacy FTP Requirements
+
+Set FTP credentials in PowerShell:
+
 ```powershell
 $env:CPANEL_FTP_SERVER="ftp.yourdomain.com"
 $env:CPANEL_FTP_USERNAME="your-ftp-username"
 $env:CPANEL_FTP_PASSWORD="your-password"
 ```
 
-**Option B: Edit deploy-ftp.js**
-Replace `YOUR_FTP_*` values in `deploy-ftp.js`:
-```javascript
-const config = {
-  user: "your-ftp-username",
-  password: "your-password",
-  host: "ftp.yourdomain.com",
-  // ...
-}
-```
+Then run the legacy helper directly:
 
-### 2. Deploy
-
-**One-Step Deployment:**
 ```powershell
-npm run deploy
-```
-This builds and deploys in one command!
-
-**Or Step-by-Step:**
-```powershell
-npm run build      # Build first
-npm run deploy:ftp  # Then upload
+pwsh ./deploy.ps1
 ```
 
-**Or PowerShell Script:**
-```powershell
-.\deploy.ps1
-```
+## Important Caveats
 
-## Troubleshooting
-
-### FTP Error 421
-- Your IP may be rate-limited
-- Wait 5-10 minutes and try again
-- Contact hosting provider to whitelist your IP
-
-### Manual Upload with FileZilla
-
-If automated FTP fails:
-
-1. **Download FileZilla:** https://filezilla-project.org/download.php?type=client
-2. **Build locally:**
-   ```powershell
-   npm run build
-   ```
-3. **Open FileZilla**
-4. **Connect:**
-   - Host: `ftp.yourdomain.com`
-   - Username: `your-ftp-username`
-   - Password: `your-password`
-   - Port: `21`
-5. **Navigate** on server to: `/dadchefai/`
-6. **Upload** all files from local `./dist/*` folder
-
-## Files
-
-- `deploy-ftp.js` - Node.js FTP deployment script
-- `deploy.ps1` - PowerShell wrapper (build + deploy)
-- `package.json` - Added `deploy` and `deploy:ftp` commands
-
-## Remote Path
-
-Files will deploy to: `/dadchefai/` on your cPanel server
-
-View at: `https://yourdomain.com/dadchefai/`
+- This repo does not currently define active `npm run deploy` or `npm run deploy:ftp` scripts.
+- The FTP helper is not the normal production path.
+- Remote upload paths in the legacy script may need review before use.
+- Prefer cPanel’s git-based deployment whenever possible.

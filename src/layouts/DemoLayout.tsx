@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutGrid, Cpu, Disc, ShieldCheck, Box } from 'lucide-react';
+import { LayoutGrid, Cpu, Disc, ShieldCheck, Box, PhoneCall } from 'lucide-react';
 import { AppModule } from '../types';
 
 interface DemoLayoutProps {
@@ -58,6 +58,12 @@ export const DemoLayout: React.FC<DemoLayoutProps> = ({ children, activeModule, 
             label="Neural Core" 
             isActive={activeModule === AppModule.NEURAL_CORE}
             onClick={() => navigate(AppModule.NEURAL_CORE)}
+          />
+          <DockItem 
+            icon={<PhoneCall className="w-5 h-5" />} 
+            label="Voice Grid" 
+            isActive={activeModule === AppModule.VOICE_GRID}
+            onClick={() => navigate(AppModule.VOICE_GRID)}
           />
           <DockItem 
             icon={<Disc className="w-5 h-5" />} 

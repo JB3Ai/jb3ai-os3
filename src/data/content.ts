@@ -84,6 +84,12 @@ export const PAGE_METADATA: Record<AppModule, { title: string; description: stri
     robots: "noindex, nofollow",
     path: "apps/voice-grid"
   },
+  [AppModule.VOICE_GRID]: {
+    title: "Voice Grid Console | JB³Ai",
+    description: "Internal Voice Grid execution console for sandboxed voice qualification sessions.",
+    robots: "noindex, nofollow",
+    path: "demo/voice-grid"
+  },
   [AppModule.MOTION_LAB]: {
     title: "Motion Lab | JB³Ai",
     description: "VEO Loop Engine for institutional motion asset synthesis.",
@@ -237,7 +243,7 @@ export const getStructuredData = (module: AppModule) => {
     schemas.push(breadcrumb([{ name: "Home", item: "" }, { name: "Services", item: "services" }]));
   }
 
-  const appModules = [AppModule.INVESTIGATOR_AI, AppModule.SHIELD_AI, AppModule.MINDCARE_AI];
+  const appModules = [AppModule.INVESTIGATOR_AI, AppModule.SHIELD_AI, AppModule.MINDCARE_AI, AppModule.PHONE_SYSTEM];
   if (appModules.includes(module)) {
     const meta = PAGE_METADATA[module];
     schemas.push({

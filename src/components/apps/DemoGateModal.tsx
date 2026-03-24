@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, X } from 'lucide-react';
+import { Briefcase, Building2, Mail, Phone, MapPin, User, X } from 'lucide-react';
 
 interface DemoGateModalProps {
   isOpen: boolean;
@@ -9,12 +9,16 @@ interface DemoGateModalProps {
 
 export const DemoGateModal: React.FC<DemoGateModalProps> = ({ isOpen, onCancel, onSubmit }) => {
   const [formData, setFormData] = useState({
+    fullName: '',
+    company: '',
     email: '',
     phone: '',
+    interestType: 'Voice Grid Demo',
+    preferredLanguage: 'English',
     country: 'International',
     consent: false
   });
-  const [errors, setErrors] = useState<{ email?: string; consent?: string }>({});
+  const [errors, setErrors] = useState<{ fullName?: string; company?: string; email?: string; consent?: string }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
@@ -24,7 +28,13 @@ export const DemoGateModal: React.FC<DemoGateModalProps> = ({ isOpen, onCancel, 
   };
 
   const handleAction = async (type: 'demo' | 'callback') => {
-    const newErrors: { email?: string; consent?: string } = {};
+    const newErrors: { fullName?: string; company?: string; email?: string; consent?: string } = {};
+    if (!formData.fullName.trim()) {
+      newErrors.fullName = "Name is required.";
+    }
+    if (!formData.company.trim()) {
+      newErrors.company = "Company is required.";
+    }
     if (!formData.email || !validateEmail(formData.email)) {
       newErrors.email = "Valid professional email required.";
     }
@@ -87,6 +97,46 @@ export const DemoGateModal: React.FC<DemoGateModalProps> = ({ isOpen, onCancel, 
 
         <div className="space-y-6">
           <div className="space-y-2">
+            <label htmlFor="fullName" className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-2">
+              <User className="w-3 h-3" /> Full Name
+            </label>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              disabled={isSubmitting}
+              className={`w-full bg-black border ${errors.fullName ? 'border-red-500/50' : 'border-gray-800'} p-4 text-sm focus:border-cyan-500 outline-none transition-all placeholder:text-gray-700 font-mono text-white`}
+              placeholder="Your name"
+              value={formData.fullName}
+              onChange={e => {
+                setFormData({ ...formData, fullName: e.target.value });
+                setErrors({ ...errors, fullName: undefined });
+              }}
+            />
+            {errors.fullName && <p className="text-[9px] text-red-500 font-mono uppercase">{errors.fullName}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="company" className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-2">
+              <Building2 className="w-3 h-3" /> Company
+            </label>
+            <input
+              id="company"
+              name="company"
+              type="text"
+              disabled={isSubmitting}
+              className={`w-full bg-black border ${errors.company ? 'border-red-500/50' : 'border-gray-800'} p-4 text-sm focus:border-cyan-500 outline-none transition-all placeholder:text-gray-700 font-mono text-white`}
+              placeholder="Organization"
+              value={formData.company}
+              onChange={e => {
+                setFormData({ ...formData, company: e.target.value });
+                setErrors({ ...errors, company: undefined });
+              }}
+            />
+            {errors.company && <p className="text-[9px] text-red-500 font-mono uppercase">{errors.company}</p>}
+          </div>
+
+          <div className="space-y-2">
             <label htmlFor="email" className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-2">
               <Mail className="w-3 h-3" /> Professional Email
             </label>
@@ -104,6 +154,46 @@ export const DemoGateModal: React.FC<DemoGateModalProps> = ({ isOpen, onCancel, 
               }} 
             />
             {errors.email && <p className="text-[9px] text-red-500 font-mono uppercase">{errors.email}</p>}
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="interestType" className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-2">
+              <Briefcase className="w-3 h-3" /> Business Interest
+            </label>
+            <select
+              id="interestType"
+              name="interestType"
+              disabled={isSubmitting}
+              className="w-full bg-black border border-gray-800 p-4 text-sm focus:border-cyan-500 outline-none transition-all font-mono text-white appearance-none cursor-pointer"
+              value={formData.interestType}
+              onChange={e => setFormData({ ...formData, interestType: e.target.value })}
+            >
+              <option value="Voice Grid Demo">Voice Grid Demo</option>
+              <option value="AI Receptionist">AI Receptionist</option>
+              <option value="Lead Qualification">Lead Qualification</option>
+              <option value="Outbound Campaigns">Outbound Campaigns</option>
+              <option value="Advisor Callback">Advisor Callback</option>
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <label htmlFor="preferredLanguage" className="text-[10px] font-mono text-gray-500 uppercase flex items-center gap-2">
+              <Building2 className="w-3 h-3" /> Preferred Language
+            </label>
+            <select
+              id="preferredLanguage"
+              name="preferredLanguage"
+              disabled={isSubmitting}
+              className="w-full bg-black border border-gray-800 p-4 text-sm focus:border-cyan-500 outline-none transition-all font-mono text-white appearance-none cursor-pointer"
+              value={formData.preferredLanguage}
+              onChange={e => setFormData({ ...formData, preferredLanguage: e.target.value })}
+            >
+              <option value="English">English</option>
+              <option value="Afrikaans">Afrikaans</option>
+              <option value="isiZulu">isiZulu</option>
+              <option value="isiXhosa">isiXhosa</option>
+              <option value="Sepedi">Sepedi</option>
+            </select>
           </div>
 
           <div className="space-y-2">

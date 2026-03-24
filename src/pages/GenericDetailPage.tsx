@@ -152,7 +152,7 @@ export const GenericDetailPage: React.FC<GenericDetailPageProps> = ({ module, on
                             <motion.button
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
-                                onClick={() => onNavigate(AppModule.WORKSPACE)}
+                                onClick={() => onNavigate(module === AppModule.PHONE_SYSTEM ? AppModule.VOICE_GRID : AppModule.WORKSPACE)}
                                 className="bg-white text-black text-[10px] font-bold px-10 py-4 uppercase tracking-[0.2em] hover:bg-cyan-500 hover:text-white transition-all shadow-xl whitespace-nowrap"
                             >
                                 {content.ctaPrimary}

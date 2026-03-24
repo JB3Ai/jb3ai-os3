@@ -23,14 +23,26 @@ import { AdvisoryPage } from './pages/AdvisoryPage';
 import { DemoWorkspacePage } from './pages/DemoWorkspacePage';
 import { PolicyPage } from './pages/PolicyPage';
 
+const readLeadData = () => {
+  const saved = localStorage.getItem('jb3ai_lead');
+  if (!saved) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(saved);
+  } catch (error) {
+    console.warn('Failed to parse jb3ai_lead from localStorage, clearing corrupted value.', error);
+    localStorage.removeItem('jb3ai_lead');
+    return null;
+  }
+};
+
 const App: React.FC = () => {
   const [activeModule, setActiveModule] = useState<AppModule>(AppModule.HOME);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [fontSize, setFontSize] = useState<'s' | 'l'>('s');
-  const [leadData, setLeadData] = useState<any>(() => {
-    const saved = localStorage.getItem('jb3ai_lead');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [leadData, setLeadData] = useState<any>(readLeadData);
   const [showGateModal, setShowGateModal] = useState(false);
 
   useEffect(() => { document.documentElement.className = `font-${fontSize}`; }, [fontSize]);

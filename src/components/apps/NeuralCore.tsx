@@ -11,11 +11,15 @@ export const NeuralCore: React.FC = () => {
     const [status, setStatus] = useState<'IDLE' | 'LISTENING' | 'PROCESSING'>('IDLE');
 
     const audioContextRef = useRef<AudioContext | null>(null);
+    const inputContextRef = useRef<AudioContext | null>(null);
     const streamRef = useRef<MediaStream | null>(null);
     const sessionRef = useRef<any>(null);
     const sourcesRef = useRef<Set<AudioBufferSourceNode>>(new Set());
     const nextStartTimeRef = useRef<number>(0);
     const logEndRef = useRef<HTMLDivElement>(null);
+    const isConnectedRef = useRef(false);
+    const isMutedRef = useRef(false);
+    const animationFrameRef = useRef<number | null>(null);
 
     // Visualizer
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -30,6 +34,14 @@ export const NeuralCore: React.FC = () => {
     }, [logs]);
 
     useEffect(() => {
+        isConnectedRef.current = isConnected;
+    }, [isConnected]);
+
+    useEffect(() => {
+        isMutedRef.current = isMuted;
+    }, [isMuted]);
+
+    useEffect(() => {
         return () => {
             disconnect();
         };
@@ -40,6 +52,7 @@ export const NeuralCore: React.FC = () => {
             audioContextRef.current = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 24000 });
             const analyser = audioContextRef.current.createAnalyser();
             analyser.fftSize = 256;
+            analyser.connect(audioContextRef.current.destination);
             analyserRef.current = analyser;
         }
     };
@@ -54,7 +67,7 @@ export const NeuralCore: React.FC = () => {
         const dataArray = new Uint8Array(bufferLength);
 
         const draw = () => {
-            if (!isConnected) {
+            if (!isConnectedRef.current) {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 // Draw idle line
                 ctx.beginPath();
@@ -64,7 +77,7 @@ export const NeuralCore: React.FC = () => {
                 ctx.stroke();
                 return;
             }
-            requestAnimationFrame(draw);
+            animationFrameRef.current = requestAnimationFrame(draw);
 
             analyserRef.current!.getByteFrequencyData(dataArray);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -93,7 +106,10 @@ export const NeuralCore: React.FC = () => {
     };
 
     const connect = async () => {
+        if (isConnectedRef.current) return;
+
         initAudio();
+        await audioContextRef.current?.resume();
         const ai = getGenAiInstance();
         const config = {
             model: 'gemini-2.5-flash-native-audio-preview-12-2025',
@@ -101,7 +117,7 @@ export const NeuralCore: React.FC = () => {
                 onopen: async () => {
                     addLog("System: Neural Core initialized.");
                     setIsConnected(true);
-                    setStatus('IDLE');
+                    setStatus('LISTENING');
                     drawVisualizer();
 
                     try {
@@ -109,14 +125,17 @@ export const NeuralCore: React.FC = () => {
                         streamRef.current = stream;
 
                         const inputCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+                        inputContextRef.current = inputCtx;
+                        await inputCtx.resume();
                         const source = inputCtx.createMediaStreamSource(stream);
 
-                        const scriptProcessor = inputCtx.createScriptProcessor(4096, 1, 1);
+                        const scriptProcessor = inputCtx.createScriptProcessor(2048, 1, 1);
                         scriptProcessor.onaudioprocess = (e) => {
-                            if (isMuted) return;
+                            if (isMutedRef.current) return;
                             const inputData = e.inputBuffer.getChannelData(0);
                             const pcmBlob = createPcmBlob(inputData);
 
+                            if (!sessionRef.current) return;
                             sessionRef.current.then((session: any) => {
                                 session.sendRealtimeInput({ media: pcmBlob });
                             });
@@ -147,14 +166,13 @@ export const NeuralCore: React.FC = () => {
 
                         if (analyserRef.current) {
                             source.connect(analyserRef.current);
-                            analyserRef.current.connect(ctx.destination);
                         } else {
                             source.connect(ctx.destination);
                         }
 
                         source.addEventListener('ended', () => {
                             sourcesRef.current.delete(source);
-                            if (sourcesRef.current.size === 0) setStatus('IDLE');
+                            if (sourcesRef.current.size === 0) setStatus('LISTENING');
                         });
 
                         source.start(nextStartTimeRef.current);
@@ -167,6 +185,7 @@ export const NeuralCore: React.FC = () => {
                         sourcesRef.current.forEach(s => s.stop());
                         sourcesRef.current.clear();
                         nextStartTimeRef.current = 0;
+                        setStatus('LISTENING');
                     }
                 },
                 onclose: () => {
@@ -202,9 +221,19 @@ export const NeuralCore: React.FC = () => {
         if (streamRef.current) {
             streamRef.current.getTracks().forEach(t => t.stop());
         }
+        if (inputContextRef.current) {
+            inputContextRef.current.close().catch(() => undefined);
+            inputContextRef.current = null;
+        }
         sourcesRef.current.forEach(s => s.stop());
         sourcesRef.current.clear();
+        if (animationFrameRef.current !== null) {
+            cancelAnimationFrame(animationFrameRef.current);
+            animationFrameRef.current = null;
+        }
+        nextStartTimeRef.current = 0;
         setIsConnected(false);
+        setStatus('IDLE');
     };
 
     const toggleMute = () => setIsMuted(!isMuted);

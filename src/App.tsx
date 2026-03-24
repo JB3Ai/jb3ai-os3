@@ -9,6 +9,7 @@ import { DemoGateModal } from './components/apps/DemoGateModal';
 import { PAGE_METADATA, getStructuredData } from './data/content';
 
 const NeuralCore = React.lazy(() => import('./components/apps/NeuralCore').then(m => ({ default: m.NeuralCore })));
+const VoiceGrid = React.lazy(() => import('./components/apps/VoiceGrid').then(m => ({ default: m.VoiceGrid })));
 const MediaLab = React.lazy(() => import('./components/apps/MediaLab').then(m => ({ default: m.MediaLab })));
 const MotionLab = React.lazy(() => import('./components/apps/MotionLab').then(m => ({ default: m.MotionLab })));
 const ClientZone = React.lazy(() => import('./components/apps/ClientZone').then(m => ({ default: m.ClientZone })));
@@ -58,6 +59,7 @@ const App: React.FC = () => {
     return saved ? JSON.parse(saved) : null;
   });
   const [showGateModal, setShowGateModal] = useState(false);
+  const [pendingModule, setPendingModule] = useState<AppModule>(AppModule.WORKSPACE);
 
   useEffect(() => { document.documentElement.className = `font-${fontSize}`; }, [fontSize]);
 
@@ -117,7 +119,8 @@ const App: React.FC = () => {
   }, [activeModule]);
 
   const navigate = (m: AppModule) => {
-    if ([AppModule.WORKSPACE, AppModule.NEURAL_CORE, AppModule.MEDIA_LAB, AppModule.MOTION_LAB].includes(m) && !leadData) {
+    if ([AppModule.WORKSPACE, AppModule.NEURAL_CORE, AppModule.MEDIA_LAB, AppModule.VOICE_GRID, AppModule.MOTION_LAB].includes(m) && !leadData) {
+      setPendingModule(m);
       setShowGateModal(true);
       return;
     }
@@ -143,7 +146,12 @@ const App: React.FC = () => {
   const handleGateSubmit = (data: any) => {
     setLeadData(data);
     setShowGateModal(false);
-    setActiveModule(AppModule.WORKSPACE);
+    setActiveModule(pendingModule);
+    const meta = PAGE_METADATA[pendingModule];
+    const path = meta?.path !== undefined ? `/${meta.path}` : '/';
+    if (window.location.pathname !== path) {
+      window.history.pushState(null, '', path);
+    }
     window.scrollTo(0, 0);
   };
 
@@ -168,7 +176,7 @@ const App: React.FC = () => {
     return () => window.removeEventListener('hashchange', handleHashScroll);
   }, [activeModule]);
 
-  const isDemoLayout = [AppModule.WORKSPACE, AppModule.NEURAL_CORE, AppModule.MEDIA_LAB, AppModule.MOTION_LAB, AppModule.CLIENT_ZONE].includes(activeModule);
+  const isDemoLayout = [AppModule.WORKSPACE, AppModule.NEURAL_CORE, AppModule.MEDIA_LAB, AppModule.VOICE_GRID, AppModule.MOTION_LAB, AppModule.CLIENT_ZONE].includes(activeModule);
 
   const renderContent = () => {
     switch (activeModule) {
@@ -192,6 +200,7 @@ const App: React.FC = () => {
       case AppModule.COMPLIANCE:
         return <PolicyPage module={activeModule} />;
       case AppModule.NEURAL_CORE: return <NeuralCore />;
+      case AppModule.VOICE_GRID: return <VoiceGrid leadData={leadData} />;
       case AppModule.MEDIA_LAB: return <MediaLab />;
       case AppModule.MOTION_LAB: return <MotionLab />;
       case AppModule.CLIENT_ZONE: return <ClientZone />;

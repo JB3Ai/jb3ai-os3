@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ShieldCheck, Cpu, Disc, Box, LogOut, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Cpu, Disc, Box, LogOut, ArrowRight, PhoneCall } from 'lucide-react';
 import { AppModule } from '../types';
 import { DashboardBackdrop } from '../components/ui/DashboardBackdrop';
 import { CredibilityStrip } from '../components/ui/CredibilityStrip';
@@ -88,7 +88,7 @@ export const DemoWorkspacePage: React.FC<DemoWorkspacePageProps> = ({ onNavigate
                 </FadeIn>
             </div>
 
-            <div id="demo-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1 relative z-10 max-w-6xl mx-auto bg-gray-900/20 border border-gray-900">
+            <div id="demo-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1 relative z-10 max-w-6xl mx-auto bg-gray-900/20 border border-gray-900">
                 <motion.button
                     whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}
                     onClick={() => onNavigate(AppModule.NEURAL_CORE)}
@@ -98,6 +98,17 @@ export const DemoWorkspacePage: React.FC<DemoWorkspacePageProps> = ({ onNavigate
                     <div className="space-y-4">
                         <h3 className="text-white text-xs uppercase font-bold tracking-widest">Neural Core</h3>
                         <p className="text-[10px] text-gray-500 uppercase tracking-widest leading-relaxed">Intelligence Sync — Level 01 Access</p>
+                    </div>
+                </motion.button>
+                <motion.button
+                    whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.05)" }}
+                    onClick={() => onNavigate(AppModule.VOICE_GRID)}
+                    className="group p-12 bg-black/40 hover:bg-white/5 transition-all space-y-8 text-left border-r border-b border-gray-900 lg:border-r"
+                >
+                    <div className="icon-plate"><PhoneCall /></div>
+                    <div className="space-y-4">
+                        <h3 className="text-white text-xs uppercase font-bold tracking-widest">Voice Grid</h3>
+                        <p className="text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Call Execution - Level 01 Access</p>
                     </div>
                 </motion.button>
                 <motion.button

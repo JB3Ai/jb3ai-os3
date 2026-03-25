@@ -6,6 +6,13 @@ import { AppModule } from '../types';
 import { DashboardBackdrop } from '../components/ui/DashboardBackdrop';
 import { FadeIn } from '../components/ui/FadeIn';
 
+const DIRECT_LEADS_EMAIL = 'hi@jb3ai.com';
+
+const openDirectEmailDraft = (subject: string, lines: string[]) => {
+    const body = lines.filter(Boolean).join('\n');
+    window.location.href = `mailto:${encodeURIComponent(DIRECT_LEADS_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
 interface ContactPageProps {
     onNavigate: (m: AppModule) => void;
 }
@@ -21,7 +28,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log("Contact submission:", formData);
+        openDirectEmailDraft(
+            `JB3Ai Advisory Request - ${formData.organization || 'Website Contact'}`,
+            [
+                'New JB3Ai advisory request.',
+                '',
+                `Name: ${formData.name}`,
+                `Email: ${formData.email}`,
+                `Organization: ${formData.organization}`,
+                '',
+                'Project Brief:',
+                formData.message,
+                '',
+                'Source: https://jb3ai.com/contact',
+                `Submitted: ${new Date().toISOString()}`
+            ]
+        );
         setIsSent(true);
     };
 
@@ -42,8 +64,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {isSent ? (
                     <FadeIn className="p-12 border border-cyan-500/20 bg-cyan-500/5 text-cyan-500 space-y-4">
-                        <h3 className="text-sm font-bold uppercase tracking-[0.3em]">Briefing Requested</h3>
-                        <p className="text-xs uppercase tracking-widest leading-relaxed">Your request has been logged. An advisory officer will contact you within one business cycle.</p>
+                        <h3 className="text-sm font-bold uppercase tracking-[0.3em]">Email Draft Opened</h3>
+                        <p className="text-xs uppercase tracking-widest leading-relaxed">Your mail app should now be ready with the advisory request addressed to hi@jb3ai.com. Send the draft to complete the briefing request.</p>
                         <button onClick={() => onNavigate(AppModule.HOME)} className="text-[10px] font-bold uppercase tracking-[0.4em] mt-8 hover:text-white transition-colors flex items-center gap-4">
                             <ArrowRight className="w-3 h-3 rotate-180" /> Return to Terminal
                         </button>
@@ -133,7 +155,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     <FadeIn delay={0.3} className="p-12 border-l border-gray-900 space-y-6">
                         <h4 className="text-[10px] font-bold text-gray-600 uppercase tracking-widest font-mono">Enclave Communications</h4>
                         <p className="text-[10px] text-gray-700 leading-relaxed uppercase tracking-[0.2em] font-mono">
-                            Direct engagement is conducted via secure lines. Briefing requests are prioritized by organizational alignment and security clearance.
+                            Direct engagement is conducted via secure email. Advisory requests route to hi@jb3ai.com and are prioritized by organizational alignment and security clearance.
                         </p>
                     </FadeIn>
                 </section>

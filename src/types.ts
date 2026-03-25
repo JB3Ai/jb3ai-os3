@@ -16,6 +16,7 @@ export enum AppModule {
 
   // Functional Workspace (OS³ Dash)
   WORKSPACE = 'WORKSPACE',
+  DEMO_SIGNUP = 'DEMO_SIGNUP',
   NEURAL_CORE = 'NEURAL_CORE',
   MEDIA_LAB = 'MEDIA_LAB',
   PHONE_SYSTEM = 'PHONE_SYSTEM',

@@ -68,6 +68,12 @@ export const PAGE_METADATA: Record<AppModule, { title: string; description: stri
     path: "demo",
     robots: "noindex, nofollow"
   },
+  [AppModule.DEMO_SIGNUP]: {
+    title: "Demo Access Request | JB³Ai",
+    description: "Request controlled JB3Ai demo access and continue to the appropriate workspace.",
+    path: "demo/register",
+    robots: "noindex, nofollow"
+  },
   [AppModule.NEURAL_CORE]: {
     title: "Neural Core | JB³Ai",
     description: "Central intelligence sync and neural processing unit for OS³ Dash.",
@@ -202,6 +208,20 @@ export const getStructuredData = (module: AppModule) => {
     "@context": "https://schema.org",
   };
 
+  const os3SoftwareApplication = {
+    ...baseData,
+    "@type": "SoftwareApplication",
+    "name": "OS³ Dash",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI operating system for business. Automates workflows, integrates systems, and delivers real-time intelligence.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  };
+
   const breadcrumb = (items: { name: string; item: string }[]) => ({
     "@type": "BreadcrumbList",
     "itemListElement": items.map((it, idx) => ({
@@ -217,21 +237,20 @@ export const getStructuredData = (module: AppModule) => {
   if (module === AppModule.HOME) {
     schemas.push({
       ...baseData,
-      "@type": "Organization",
+      "@type": "WebSite",
       "name": "JB³Ai",
       "url": "https://jb3ai.com",
-      "description": PAGE_METADATA[AppModule.HOME].description
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://jb3ai.com/?search={query}",
+        "query-input": "required name=query"
+      }
     });
+    schemas.push(os3SoftwareApplication);
   }
 
   if (module === AppModule.OS3_INFO) {
-    schemas.push({
-      ...baseData,
-      "@type": "Product",
-      "name": "OS³ Dash",
-      "description": PAGE_METADATA[AppModule.OS3_INFO].description,
-      "brand": { "@type": "Brand", "name": "JB³Ai" }
-    });
+    schemas.push(os3SoftwareApplication);
     schemas.push(breadcrumb([{ name: "Home", item: "" }, { name: "OS³ Dash", item: "os3" }]));
   }
 
@@ -246,14 +265,25 @@ export const getStructuredData = (module: AppModule) => {
   const appModules = [AppModule.INVESTIGATOR_AI, AppModule.SHIELD_AI, AppModule.MINDCARE_AI, AppModule.PHONE_SYSTEM];
   if (appModules.includes(module)) {
     const meta = PAGE_METADATA[module];
-    schemas.push({
-      ...baseData,
-      "@type": "SoftwareApplication",
-      "name": meta.title.split(' | ')[0],
-      "applicationCategory": "BusinessApplication",
-      "operatingSystem": "Web",
-      "description": meta.description
-    });
+    if (module === AppModule.INVESTIGATOR_AI) {
+      schemas.push({
+        ...baseData,
+        "@type": "SoftwareApplication",
+        "name": "InvestigatorAi",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "description": "AI-powered due diligence and risk intelligence platform for identity resolution and continuous monitoring."
+      });
+    } else {
+      schemas.push({
+        ...baseData,
+        "@type": "SoftwareApplication",
+        "name": meta.title.split(' | ')[0],
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": meta.description
+      });
+    }
     schemas.push(breadcrumb([
       { name: "Home", item: "" },
       { name: "Applications", item: "apps" },

@@ -38,6 +38,16 @@ const readLeadData = () => {
   }
 };
 
+const CLIPBOARD_PATH = '/clipboard';
+const OS3GRID_PATH = '/os3grid';
+const DEMO_GATE_MODULES: AppModule[] = [
+  AppModule.WORKSPACE,
+  AppModule.NEURAL_CORE,
+  AppModule.MEDIA_LAB,
+  AppModule.PHONE_SYSTEM,
+  AppModule.MOTION_LAB,
+];
+
 const App: React.FC = () => {
   const [activeModule, setActiveModule] = useState<AppModule>(AppModule.HOME);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,6 +56,18 @@ const App: React.FC = () => {
   const [showGateModal, setShowGateModal] = useState(false);
 
   useEffect(() => { document.documentElement.className = `font-${fontSize}`; }, [fontSize]);
+
+  const getDemoRedirectPath = (module: AppModule) => {
+    if (module === AppModule.PHONE_SYSTEM) {
+      return OS3GRID_PATH;
+    }
+
+    return CLIPBOARD_PATH;
+  };
+
+  const redirectToDemoDestination = (module: AppModule) => {
+    window.location.assign(getDemoRedirectPath(module));
+  };
 
   // --- Dynamic Metadata Handling ---
   useEffect(() => {
@@ -103,10 +125,16 @@ const App: React.FC = () => {
   }, [activeModule]);
 
   const navigate = (m: AppModule) => {
-    if ([AppModule.WORKSPACE, AppModule.NEURAL_CORE, AppModule.MEDIA_LAB, AppModule.MOTION_LAB].includes(m) && !leadData) {
-      setShowGateModal(true);
+    if (DEMO_GATE_MODULES.includes(m)) {
+      if (!leadData) {
+        setShowGateModal(true);
+        return;
+      }
+
+      redirectToDemoDestination(m);
       return;
     }
+
     setActiveModule(m);
     setIsMenuOpen(false);
     window.scrollTo(0, 0);
@@ -122,8 +150,11 @@ const App: React.FC = () => {
   const handleGateSubmit = (data: any) => {
     setLeadData(data);
     setShowGateModal(false);
-    setActiveModule(AppModule.WORKSPACE);
-    window.scrollTo(0, 0);
+    redirectToDemoDestination(AppModule.WORKSPACE);
+  };
+
+  const handleGateCancel = () => {
+    setShowGateModal(false);
   };
 
   // --- Smooth Anchor Scroll Handling ---
@@ -180,7 +211,7 @@ const App: React.FC = () => {
     <>
       <DemoGateModal
         isOpen={showGateModal}
-        onCancel={() => setShowGateModal(false)}
+        onCancel={handleGateCancel}
         onSubmit={handleGateSubmit}
       />
       {isDemoLayout ? (

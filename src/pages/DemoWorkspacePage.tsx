@@ -43,10 +43,7 @@ export const DemoWorkspacePage: React.FC<DemoWorkspacePageProps> = ({ onNavigate
                     <motion.button
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        onClick={() => {
-                            const el = document.getElementById('demo-grid');
-                            el?.scrollIntoView({ behavior: 'smooth' });
-                        }}
+                        onClick={() => onNavigate(AppModule.DEMO_SIGNUP)}
                         className="bg-white text-black px-16 py-6 text-[10px] font-bold uppercase tracking-[0.4em] hover:bg-gray-200 transition-all shadow-2xl active:scale-95"
                     >
                         Initialize Live Demo

@@ -1,6 +1,13 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, X } from 'lucide-react';
 
+const DIRECT_LEADS_EMAIL = 'hi@jb3ai.com';
+
+const openDirectEmailDraft = (subject: string, lines: string[]) => {
+  const body = lines.filter(Boolean).join('\n');
+  window.location.href = `mailto:${encodeURIComponent(DIRECT_LEADS_EMAIL)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+};
+
 interface DemoGateModalProps {
   isOpen: boolean;
   onCancel: () => void;
@@ -45,21 +52,21 @@ export const DemoGateModal: React.FC<DemoGateModalProps> = ({ isOpen, onCancel, 
         timestamp: new Date().toISOString() 
       };
 
-      try {
-        await fetch("https://script.google.com/macros/s/AKfycbxrgsjAnByZPCuQGvtlLTHvmDzEKY3lx4-jCMTOQnIogseLOgPM3Tsjv9EHysH84WFr/exec", {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            ...payload,
-            sourcePath: window.location.pathname,
-            userAgent: navigator.userAgent,
-            referrer: document.referrer || ""
-          })
-        });
-      } catch (e) {
-        console.warn("Lead transmission skipped or failed", e);
-      }
+      openDirectEmailDraft(
+        `JB3Ai Access Registry - ${type === 'callback' ? 'Advisor Callback' : 'Demo Request'}`,
+        [
+          'New JB3Ai access registry request.',
+          '',
+          `Request Type: ${type}`,
+          `Email: ${payload.email}`,
+          `Phone: ${payload.phone || 'Not supplied'}`,
+          `Region: ${payload.country}`,
+          '',
+          `Source: ${window.location.pathname}`,
+          `Referrer: ${document.referrer || 'Direct'}`,
+          `Submitted: ${payload.timestamp}`
+        ]
+      );
 
       localStorage.setItem('jb3ai_lead', JSON.stringify(payload));
       onSubmit(payload);

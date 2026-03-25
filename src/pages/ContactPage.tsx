@@ -6,6 +6,7 @@ import { User, Mail, Building, MessageSquare, ArrowRight } from 'lucide-react';
 import { AppModule } from '../types';
 import { DashboardBackdrop } from '../components/ui/DashboardBackdrop';
 import { FadeIn } from '../components/ui/FadeIn';
+import { DIRECT_LEADS_EMAIL, openDirectEmailDraft } from '../utils/directEmail';
 
 interface ContactPageProps {
     onNavigate: (m: AppModule) => void;
@@ -23,21 +24,22 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         const data = Object.fromEntries(formData.entries());
 
         try {
-            await fetch("https://script.google.com/macros/s/AKfycbxrgsjAnByZPCuQGvtlLTHvmDzEKY3lx4-jCMTOQnIogseLOgPM3Tsjv9EHysH84WFr/exec", {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    ...data,
-                    lead_type: 'contact_form',
-                    timestamp: new Date().toISOString(),
-                    userAgent: navigator.userAgent
-                })
+            openDirectEmailDraft({
+                subject: `JB3Ai Advisory Request - ${String(data.organization || 'Website Contact')}`,
+                lines: [
+                    'New JB3Ai advisory request.',
+                    '',
+                    `Name: ${String(data.name || '')}`,
+                    `Email: ${String(data.email || '')}`,
+                    `Organization: ${String(data.organization || '')}`,
+                    '',
+                    'Project Brief:',
+                    String(data.message || ''),
+                    '',
+                    `Source: https://jb3ai.com/contact`,
+                    `Submitted: ${new Date().toISOString()}`
+                ]
             });
-
-            // With no-cors, we assume success if no network error throws
             setStatus('success');
             form.reset();
         } catch (error) {
@@ -62,8 +64,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
 
                 {status === 'success' ? (
                     <FadeIn className="p-12 border border-cyan-500/20 bg-cyan-500/5 text-cyan-500 space-y-4">
-                        <h3 className="text-sm font-bold uppercase tracking-[0.3em]">Briefing Requested</h3>
-                        <p className="text-xs uppercase tracking-widest leading-relaxed">Your request has been logged. An advisory officer will contact you within one business cycle.</p>
+                        <h3 className="text-sm font-bold uppercase tracking-[0.3em]">Email Draft Opened</h3>
+                        <p className="text-xs uppercase tracking-widest leading-relaxed">Your mail app should now be ready with the advisory request addressed to hi@jb3ai.com. Send the draft to complete the briefing request.</p>
                         <button onClick={() => { setStatus('idle'); onNavigate(AppModule.HOME); }} className="text-[10px] font-bold uppercase tracking-[0.4em] mt-8 hover:text-white transition-colors flex items-center gap-4">
                             <ArrowRight className="w-3 h-3 rotate-180" /> Return to Terminal
                         </button>
@@ -73,7 +75,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                         <form onSubmit={handleSubmit} className="space-y-10">
                             {status === 'error' && (
                                 <div className="p-4 border border-red-500/20 bg-red-500/5 text-red-500 text-xs uppercase tracking-widest">
-                                    Transmission failed. Please try again or contact via secure line.
+                                    Direct email handoff failed. Please email {DIRECT_LEADS_EMAIL} manually.
                                 </div>
                             )}
 
@@ -152,7 +154,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                     <FadeIn className="p-12 border-l border-gray-900 space-y-6">
                         <h4 className="text-[10px] font-bold text-gray-600 uppercase tracking-widest font-mono">Enclave Communications</h4>
                         <p className="text-[10px] text-gray-700 leading-relaxed uppercase tracking-[0.2em] font-mono">
-                            Direct engagement is conducted via secure lines. Briefing requests are prioritized by organizational alignment and security clearance.
+                            Direct engagement is conducted via secure email. Advisory requests route to hi@jb3ai.com and are prioritized by organizational alignment and security clearance.
                         </p>
                     </FadeIn>
                 </section>

@@ -100,7 +100,7 @@ const App: React.FC = () => {
         <div className="flex items-center gap-6">
           <a href="https://jb3ai.com" className="hidden md:block text-[10px] uppercase tracking-widest text-[#9AA3AD] hover:text-[#66FF66] transition-colors font-bold">Visit Website</a>
           <a 
-            href="mailto:jono@jb3ai.com" 
+            href="mailto:hi@jb3ai.com" 
             className="text-[10px] font-bold uppercase tracking-widest border border-white/10 px-6 py-3 hover:bg-white/5 transition-all text-[#9AA3AD] hover:text-white rounded-none no-underline flex items-center"
           >
             Book Expert Advisor
@@ -166,7 +166,7 @@ const App: React.FC = () => {
             <div>
               <h4 className="text-[10px] uppercase tracking-widest font-bold mb-6">Connect</h4>
               <ul className="space-y-3 text-sm text-[#9AA3AD]">
-                <li><a href="mailto:jono@jb3ai.com" className="hover:text-[#66FF66] transition-colors">jono@jb3ai.com</a></li>
+                <li><a href="mailto:hi@jb3ai.com" className="hover:text-[#66FF66] transition-colors">hi@jb3ai.com</a></li>
                 <li><a href="https://jb3ai.com" className="hover:text-[#66FF66] transition-colors">www.jb3ai.com</a></li>
               </ul>
             </div>
